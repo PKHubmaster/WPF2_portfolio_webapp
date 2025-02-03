@@ -3,8 +3,16 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { motion } from 'framer-motion'; // Import framer-motion for animations
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 
 const ProjectExperiencePage = () => {
+  const router = useRouter();
+
+  // Function to navigate back to the home page
+  const handleGoHome = () => {
+    router.push('/home'); // Redirects to the home page
+  };
+
   return (
     <div
       style={{
@@ -82,6 +90,40 @@ const ProjectExperiencePage = () => {
             </tr>
           </tbody>
         </motion.table>
+
+        {/* Back to Home Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mt-4"
+        >
+          <button
+            className="btn btn-primary"
+            onClick={handleGoHome}
+            style={{ width: '100%' }}
+          >
+            Back to Home
+          </button>
+        </motion.div>
+
+        {/* LinkedIn Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mt-4"
+        >
+          <a
+            href="https://www.linkedin.com/in/sample-profile"  // Replace with your actual LinkedIn URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-link"
+            style={{ color: "#0077b5", textDecoration: "none", width: '100%' }}
+          >
+            LinkedIn Profile
+          </a>
+        </motion.div>
       </motion.div>
     </div>
   );

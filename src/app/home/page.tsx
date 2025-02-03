@@ -1,21 +1,21 @@
-'use client'; // Make this component client-side
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
-import { motion } from 'framer-motion'; // Import framer-motion for animations
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Home = () => {
   const router = useRouter();
 
   const handleNavigate = (path: string) => {
-    router.push(path); // Navigate to the specified route
+    router.push(path);
   };
 
   return (
     <div
       style={{
-        backgroundImage: "url('/home_bg.jpg')", // Use a background image
+        backgroundImage: "url('/home_bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
@@ -25,7 +25,6 @@ const Home = () => {
         position: "relative",
       }}
     >
-      {/* Dark overlay for better readability */}
       <div
         style={{
           position: "absolute",
@@ -33,7 +32,7 @@ const Home = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // Dark overlay
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}
       ></div>
 
@@ -44,8 +43,8 @@ const Home = () => {
         className="text-center text-white shadow rounded-4 p-4"
         style={{
           zIndex: 10,
-          backdropFilter: "blur(12px)",  // Glassmorphism effect
-          background: "rgba(255, 255, 255, 0.3)", // Semi-transparent background
+          backdropFilter: "blur(12px)",
+          background: "rgba(255, 255, 255, 0.3)",
         }}
       >
         <motion.h1
@@ -57,28 +56,22 @@ const Home = () => {
         </motion.h1>
 
         <motion.div
-          className="d-flex justify-content-center gap-3 mt-4"
+          className="d-flex flex-wrap justify-content-center gap-3 mt-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <button
-            className="btn btn-primary w-50"
-            onClick={() => handleNavigate('/project-experience')}
-          >
+          <button className="btn btn-primary w-50" onClick={() => handleNavigate("/project-experience")}>
             Project Experience
           </button>
-          <button
-            className="btn btn-primary w-50"
-            onClick={() => handleNavigate('/skills-education')}
-          >
+          <button className="btn btn-primary w-50" onClick={() => handleNavigate("/skills-education")}>
             IT Skills/Education
           </button>
-          <button
-            className="btn btn-primary w-50"
-            onClick={() => handleNavigate('/linkedin-profile')}
-          >
-            LinkedIn Profile
+          <button className="btn btn-success w-50" onClick={() => handleNavigate("/request-profile")}>
+            Request Candidate Profile
+          </button>
+          <button className="btn btn-info w-50" onClick={() => handleNavigate("/send-invite")}>
+            Send Invite to Employer
           </button>
         </motion.div>
       </motion.div>
