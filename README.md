@@ -19,12 +19,16 @@ What we acheived in this lab:
 =============================
 A)) DONE: Create an model for one of your project feature and create Rest API with Next JS Route Handlers:
     We addressed a feature called "Project Experience", which is a page in our portfolio management Nextjs React app
+
 B) DONE: Create a new Next.js project with TypeScript:
+
 C) DONE: Install necessary dependencies
     npm install mongoose
     npm install dotenv
     npm install mongodb
+
 D) DONE: Define your Mongoose schema and model (our schema has 5 fields and a date timestamp)
+
 E) DONE: Create route handlers for CRUD operations (see the route.ts files as per structure below):
     src
     ├── app
@@ -33,10 +37,15 @@ E) DONE: Create route handlers for CRUD operations (see the route.ts files as pe
     │   │       ├── route.ts
     │   │       └── [id]
     │   │           └── route.ts
+
 F) DONE: Create the User interface for this project feature (the project-experience\page.tsx is the UI of focus)
+
 G) DONE: Fetches and displays a list of users when the component mounts (in our case, its a list of projects)
+
 H) DONE: Provides a form to add new users. (in mur case, its a form to add a new project)
+
 I) DONE: Updates the list of users after adding a new user. (in our case, its an update option for project records in Atlas)
+
 J) DONE: Include list, update, and delete functionality for users (well, for projects)
 
-
+-end
