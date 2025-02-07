@@ -8,7 +8,7 @@ Instructions:
 1) git clone https://github.com/2025-Winter-ITE-5425-0NA/lab-6-PKHubmaster.git
 2) cd cd .\lab-6-PKHubmaster\
 3) npm install
-4) npm run dotenv
+4) npm run dev
 5) browse to:  http://localhost:3000 (our landing page)
 6) then browse to: http://localhost:3000/home (our home page)
 7) then click on Project Experience button, which takes you to: http://localhost:3000/project-experience
