@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -13,95 +12,42 @@ const AddProjectPage = () => {
     githubLink: "",
     liveLink: "",
   });
-  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, description, dateCompleted, githubLink, liveLink } = formData;
-
-    if (!name || !description || !dateCompleted || !githubLink || !liveLink) {
-      setError("All fields are required.");
-      return;
-    }
-
-    fetch("/api/projects", {
+    await fetch("/api/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        router.push("/project-experience");
-      })
-      .catch((err) => setError("Error adding project"));
+    });
+    router.push("/project-experience");
   };
 
   return (
     <div className="container">
       <h1>Add New Project</h1>
-      {error && <p className="text-danger">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Project Name</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Description</label>
-          <textarea
-            name="description"
-            className="form-control"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Date Completed</label>
-          <input
-            type="date"
-            name="dateCompleted"
-            className="form-control"
-            value={formData.dateCompleted}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">GitHub Link</label>
-          <input
-            type="url"
-            name="githubLink"
-            className="form-control"
-            value={formData.githubLink}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Live Web Link</label>
-          <input
-            type="url"
-            name="liveLink"
-            className="form-control"
-            value={formData.liveLink}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
+        {[
+          { label: "Project Name", type: "text", name: "name" },
+          { label: "Description", type: "textarea", name: "description" },
+          { label: "Date Completed", type: "date", name: "dateCompleted" },
+          { label: "GitHub Link", type: "url", name: "githubLink" },
+          { label: "Live Web Link", type: "url", name: "liveLink" },
+        ].map(({ label, type, name }) => (
+          <div key={name} className="mb-3">
+            <label className="form-label">{label}</label>
+            {type === "textarea" ? (
+              <textarea className="form-control" name={name} value={formData[name]} onChange={handleChange} required />
+            ) : (
+              <input className="form-control" type={type} name={name} value={formData[name]} onChange={handleChange} required />
+            )}
+          </div>
+        ))}
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   );

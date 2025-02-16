@@ -1,0 +1,41 @@
+import { NextResponse } from 'next/server';
+import { MongoClient, ObjectId } from 'mongodb';
+import connectToDatabase from '../../../../../lib/mongodb'; // Adjust path as necessary
+
+// MongoDB connection
+let client: MongoClient;
+
+// Connect to the MongoDB client only once and reuse the connection
+async function getClient() {
+  if (!client) {
+    client = new MongoClient(process.env.MONGODB_URI || '');
+    await client.connect(); // Ensure it connects when needed
+  }
+  return client;
+}
+
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  try {
+    // Get the MongoDB client
+    const client = await getClient();
+
+    // Extract the profileId from the params
+    const profileId = new ObjectId(params.id);
+
+    // Fetch profile from the database
+    const profile = await client
+      .db()
+      .collection('profiles')
+      .findOne({ _id: profileId });
+
+    if (!profile) {
+      return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+    }
+
+    // Return the profile data as JSON
+    return NextResponse.json(profile);
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return NextResponse.json({ error: 'Error fetching profile' }, { status: 500 });
+  }
+}

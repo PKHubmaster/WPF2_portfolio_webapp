@@ -1,83 +1,100 @@
-"use client";
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import React, { useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useRouter } from "next/navigation";
-
-const ProjectExperiencePage = () => {
+const Home = () => {
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [systemUserId, setSystemUserId] = useState<string | null>(null);
   const router = useRouter();
-  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    // Retrieve systemUserId from localStorage
+    const userId = localStorage.getItem('systemUserId');
+    if (userId) {
+      setSystemUserId(userId);
+    } else {
+      router.push('/landing_page'); // Redirect to login if no user is logged in
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!systemUserId) return;
+
+    const fetchProfiles = async () => {
       try {
-        const res = await fetch("/api/projects");
-        const data = await res.json();
-        setProjects(data.projects);
-      } catch (err) {
-        console.error("Error fetching projects:", err);
+        const response = await fetch(`/api/profiles/${systemUserId}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setProfiles(data);
+        } else {
+          setProfiles([]);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch profiles:', error);
+        setLoading(false);
       }
     };
-    fetchProjects();
-  }, []);
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure?")) {
-      try {
-        await fetch(`/api/projects/${id}`, { method: "DELETE" });
-        alert("Project deleted");
-        router.refresh();
-      } catch (err) {
-        console.error("Error deleting project:", err);
-      }
-    }
+    fetchProfiles();
+  }, [systemUserId]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('systemUserId');
+    router.push('/landing_page');
   };
 
   return (
-    <div className="container">
-      <h1>Project Experience</h1>
-      <button className="btn btn-primary mb-3" onClick={() => router.push("/project-experience/add")}>
-        Add New Project
+    <div className="container mt-4">
+      <h1 className="mb-4">Welcome to the Dashboard</h1>
+
+      <button className="btn btn-danger mb-3" onClick={handleLogout}>
+        Logout
       </button>
-      <table className="table table-striped mt-4">
-        <thead>
-          <tr>
-            <th>Project Name</th>
-            <th>Description</th>
-            <th>Date Completed</th>
-            <th>GitHub</th>
-            <th>Live</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.length > 0 ? (
-            projects.map(({ _id, name, description, dateCompleted, githubLink, liveLink }) => (
-              <tr key={_id}>
-                <td>{name}</td>
-                <td>{description}</td>
-                <td>{new Date(dateCompleted).toLocaleDateString()}</td>
-                <td>{githubLink && <a href={githubLink} target="_blank" rel="noopener noreferrer">GitHub</a>}</td>
-                <td>{liveLink && <a href={liveLink} target="_blank" rel="noopener noreferrer">Live</a>}</td>
-                <td>
-                  <button className="btn btn-warning me-2" onClick={() => router.push(`/project-experience/edit/${_id}`)}>
-                    Edit
-                  </button>
-                  <button className="btn btn-danger" onClick={() => handleDelete(_id)}>
-                    Delete
-                  </button>
-                </td>
+
+      {loading ? (
+        <p>Loading candidate profiles...</p>
+      ) : (
+        <div>
+          <h2 className="mb-3">Candidate Profiles</h2>
+          <table className="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Actions</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6}>No projects available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {profiles.length > 0 ? (
+                profiles.map((profile: any) => (
+                  <tr key={profile._id}>
+                    <td>{profile.employeeFirstName}</td>
+                    <td>{profile.employeeLastName}</td>
+                    <td>
+                      <button
+                        className="btn btn-info"
+                        onClick={() => router.push(`/candidate-details/${profile._id}`)}
+                      >
+                        View Candidate Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3}>No profiles available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ProjectExperiencePage;
+export default Home;
