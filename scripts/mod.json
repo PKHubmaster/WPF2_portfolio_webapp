@@ -1,0 +1,687 @@
+[{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a49"
+  },
+  "employeeFirstName": "Bob",
+  "employeeLastName": "Smith",
+  "employeeEmail": "bob.smith@example.com",
+  "address": "123 Elm St, Springfield",
+  "phoneNumber": "+1-555-234-5678",
+  "linkedInUrl": "https://linkedin.com/in/bobsmith",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e67" },
+      "name": "Project A",
+      "description": "A test project for Bob",
+      "dateCompleted": "2024-01-15",
+      "githubLink": "https://github.com/bob/project-a",
+      "liveLink": "https://bobprojecta.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e68" },
+      "name": "Project B",
+      "description": "An API service for data processing",
+      "dateCompleted": "2023-10-12",
+      "githubLink": "https://github.com/bob/api-service",
+      "liveLink": "https://bobapiservice.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e69" },
+      "name": "React"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e70" },
+      "name": "Node.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e71" },
+      "name": "MongoDB"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e72" },
+      "name": "Express"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e73" },
+      "name": "Docker"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4a"
+  },
+  "employeeFirstName": "Alice",
+  "employeeLastName": "Johnson",
+  "employeeEmail": "alice.johnson@example.com",
+  "address": "456 Oak St, Metropolis",
+  "phoneNumber": "+1-555-345-6789",
+  "linkedInUrl": "https://linkedin.com/in/alicejohnson",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e74" },
+      "name": "Project C",
+      "description": "A portfolio website",
+      "dateCompleted": "2023-12-10",
+      "githubLink": "https://github.com/alice/portfolio",
+      "liveLink": "https://aliceportfolio.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e75" },
+      "name": "Vue.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e76" },
+      "name": "Django"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4b"
+  },
+  "employeeFirstName": "Charlie",
+  "employeeLastName": "Brown",
+  "employeeEmail": "charlie.brown@example.com",
+  "address": "789 Maple Ave, Gotham",
+  "phoneNumber": "+1-555-456-7890",
+  "linkedInUrl": "https://linkedin.com/in/charliebrown",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e77" },
+      "name": "Project D",
+      "description": "E-commerce platform",
+      "dateCompleted": "2022-11-05",
+      "githubLink": "https://github.com/charlie/ecommerce",
+      "liveLink": "https://charlieecommerce.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e78" },
+      "name": "HTML"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e79" },
+      "name": "CSS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7a" },
+      "name": "JavaScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7b" },
+      "name": "AWS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7c" },
+      "name": "CI/CD"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4c"
+  },
+  "employeeFirstName": "David",
+  "employeeLastName": "Miller",
+  "employeeEmail": "david.miller@example.com",
+  "address": "102 Pine St, Star City",
+  "phoneNumber": "+1-555-567-8901",
+  "linkedInUrl": "https://linkedin.com/in/davidmiller",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7d" },
+      "name": "Project F",
+      "description": "A mobile app for tracking expenses",
+      "dateCompleted": "2024-02-01",
+      "githubLink": "https://github.com/david/expense-tracker",
+      "liveLink": "https://davidexpenses.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7e" },
+      "name": "Flutter"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e7f" },
+      "name": "Firebase"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4d"
+  },
+  "employeeFirstName": "Emma",
+  "employeeLastName": "Williams",
+  "employeeEmail": "emma.williams@example.com",
+  "address": "204 Birch Rd, Central City",
+  "phoneNumber": "+1-555-678-9012",
+  "linkedInUrl": "https://linkedin.com/in/emmawilliams",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e80" },
+      "name": "Project G",
+      "description": "AI-powered chatbot",
+      "dateCompleted": "2023-08-20",
+      "githubLink": "https://github.com/emma/chatbot",
+      "liveLink": "https://emmachatbot.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e81" },
+      "name": "Project H",
+      "description": "Automated trading bot",
+      "dateCompleted": "2023-05-10",
+      "githubLink": "https://github.com/emma/trading-bot",
+      "liveLink": "https://emmatrading.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e82" },
+      "name": "Python"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e83" },
+      "name": "TensorFlow"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e84" },
+      "name": "NLP"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e85" },
+      "name": "Pandas"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4e"
+  },
+  "employeeFirstName": "Frank",
+  "employeeLastName": "Anderson",
+  "employeeEmail": "frank.anderson@example.com",
+  "address": "306 Cedar Ave, Coast City",
+  "phoneNumber": "+1-555-789-0123",
+  "linkedInUrl": "https://linkedin.com/in/frankanderson",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e86" },
+      "name": "Project I",
+      "description": "A real-time chat application",
+      "dateCompleted": "2024-01-30",
+      "githubLink": "https://github.com/frank/chat-app",
+      "liveLink": "https://frankchat.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e87" },
+      "name": "Next.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e88" },
+      "name": "TypeScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e89" },
+      "name": "GraphQL"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67afb636504fb5563b8e3a4f"
+  },
+  "employeeFirstName": "Grace",
+  "employeeLastName": "Thomas",
+  "employeeEmail": "grace.thomas@example.com",
+  "address": "408 Spruce St, Keystone",
+  "phoneNumber": "+1-555-890-1234",
+  "linkedInUrl": "https://linkedin.com/in/gracethomas",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8a" },
+      "name": "Project J",
+      "description": "Weather forecasting app",
+      "dateCompleted": "2023-09-15",
+      "githubLink": "https://github.com/grace/weather-app",
+      "liveLink": "https://graceweather.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8b" },
+      "name": "Project K",
+      "description": "IoT-based home automation",
+      "dateCompleted": "2022-06-12",
+      "githubLink": "https://github.com/grace/home-automation",
+      "liveLink": "https://gracehomeauto.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8c" },
+      "name": "React Native"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8d" },
+      "name": "Expo"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8e" },
+      "name": "Redux"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe6e8f" },
+      "name": "IoT"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67afb636504fb5563b8e3a50" },
+  "employeeFirstName": "Hank",
+  "employeeLastName": "Davis",
+  "employeeEmail": "hank.davis@example.com",
+  "address": "510 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-2345",
+  "linkedInUrl": "https://linkedin.com/in/hankdavis",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f68fe7e8f" },
+      "name": "Project L",
+      "description": "Social media analytics dashboard",
+      "dateCompleted": "2022-07-10",
+      "githubLink": "https://github.com/hank/analytics-dashboard",
+      "liveLink": "https://hankanalytics.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e9a" },
+      "name": "Angular"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e90" },
+      "name": "RxJS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e91" },
+      "name": "Node.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e92" },
+      "name": "D3.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e93" },
+      "name": "GraphQL"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e94" },
+      "name": "Docker"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67afb636504fb5563b8e3a51" },
+  "employeeFirstName": "Ivy",
+  "employeeLastName": "Martinez",
+  "employeeEmail": "ivy.martinez@example.com",
+  "address": "612 Oak St, Gotham",
+  "phoneNumber": "+1-555-012-3456",
+  "linkedInUrl": "https://linkedin.com/in/ivymartinez",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e95" },
+      "name": "Project M",
+      "description": "Task management system",
+      "dateCompleted": "2024-03-05",
+      "githubLink": "https://github.com/ivy/task-manager",
+      "liveLink": "https://ivytaskmanager.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e96" },
+      "name": "Laravel"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e97" },
+      "name": "Vue.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6e98" },
+      "name": "MySQL"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6100" },
+      "name": "Redis"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "605c72ef1532072f78fe6101" },
+  "employeeFirstName": "Hank",
+  "employeeLastName": "Williams",
+  "employeeEmail": "hank.williams@example.com",
+  "address": "416 Bluegrass, Kentucky",
+  "phoneNumber": "+1-555-901-9248",
+  "linkedInUrl": "https://linkedin.com/in/hankdavis",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6102" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6103" },
+      "name": "Project D",
+      "description": "Blockchain platform",
+      "dateCompleted": "2021-12-01",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectD.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6104" },
+      "name": "Redux"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6105" },
+      "name": "Docker"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6106" },
+      "name": "Tailwind CSS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6107" },
+      "name": "Angular"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6108" },
+      "name": "JavaScript"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3acb" },
+  "employeeFirstName": "Alice",
+  "employeeLastName": "Wonderland",
+  "employeeEmail": "alice.ticktock@wonderland.com",
+  "address": "664 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-5400",
+  "linkedInUrl": "https://linkedin.com/in/alicejohnson",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6109" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610a" },
+      "name": "Docker"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610b" },
+      "name": "Tailwind CSS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610c" },
+      "name": "Angular"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610d" },
+      "name": "Vue.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610e" },
+      "name": "MySQL"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe610f" },
+      "name": "Kubernetes"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6110" },
+      "name": "React"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6112" },
+      "name": "MongoDB"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3acc" },
+  "employeeFirstName": "Bob",
+  "employeeLastName": "Marley",
+  "employeeEmail": "bob.marley@gmail.com",
+  "address": "666 Ganja City",
+  "phoneNumber": "+1-555-901-4514",
+  "linkedInUrl": "https://linkedin.com/in/bobsmith",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6113" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6114" },
+      "name": "GraphQL"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6115" },
+      "name": "MongoDB"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6116" },
+      "name": "Docker"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6117" },
+      "name": "D3.js"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3acd" },
+  "employeeFirstName": "Edgar",
+  "employeeLastName": "Poe",
+  "employeeEmail": "edgar.allenpoe@example.com",
+  "address": "457 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-6930",
+  "linkedInUrl": "https://linkedin.com/in/charliewilliams",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6118" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6119" },
+      "name": "Project B",
+      "description": "Machine learning app",
+      "dateCompleted": "2022-08-10",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectB.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6120" },
+      "name": "TypeScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611a" },
+      "name": "JavaScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611b" },
+      "name": "Redux"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611c" },
+      "name": "Tailwind CSS"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3ace" },
+  "employeeFirstName": "Wonder",
+  "employeeLastName": "Woman",
+  "employeeEmail": "linda.carter@example.com",
+  "address": "187 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-7218",
+  "linkedInUrl": "https://linkedin.com/in/hannahtaylor",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611d" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611e" },
+      "name": "Docker"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe611f" },
+      "name": "MySQL"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6121" },
+      "name": "Tailwind CSS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6122" },
+      "name": "React"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3acf" },
+  "employeeFirstName": "Igor",
+  "employeeLastName": "Scientist",
+  "employeeEmail": "igot.scientist@example.com",
+  "address": "202 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-4373",
+  "linkedInUrl": "https://linkedin.com/in/ivymoore",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6123" },
+      "name": "Project C",
+      "description": "Mobile app development",
+      "dateCompleted": "2023-04-11",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectC.com"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6124" },
+      "name": "Project B",
+      "description": "Machine learning app",
+      "dateCompleted": "2022-08-10",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectB.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6125" },
+      "name": "MongoDB"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6126" },
+      "name": "JavaScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6127" },
+      "name": "TypeScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6128" },
+      "name": "D3.js"
+    }
+  ]
+},
+{
+  "_id": { "$oid": "67b12b4b504fb5563b8e3ad0" },
+  "employeeFirstName": "John",
+  "employeeLastName": "Lennon",
+  "employeeEmail": "john.lennon@example.com",
+  "address": "782 Maple St, Smallville",
+  "phoneNumber": "+1-555-901-1709",
+  "linkedInUrl": "https://linkedin.com/in/jackanderson",
+  "projects": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6129" },
+      "name": "Project A",
+      "description": "Web development platform",
+      "dateCompleted": "2023-02-15",
+      "githubLink": "https://github.com/",
+      "liveLink": "https://projectA.com"
+    }
+  ],
+  "skills": [
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612a" },
+      "name": "Kubernetes"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612b" },
+      "name": "JavaScript"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612c" },
+      "name": "Node.js"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612d" },
+      "name": "React"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612e" },
+      "name": "Tailwind CSS"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe612f" },
+      "name": "Docker"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6130" },
+      "name": "Angular"
+    },
+    {
+      "_id": { "$oid": "605c72ef1532072f78fe6131" },
+      "name": "MongoDB"
+    }
+  ]
+}
+]
