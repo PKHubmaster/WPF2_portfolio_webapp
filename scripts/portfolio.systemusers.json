@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "67afb3412a963306b6aa173f"
+  },
+  "systemUserName": "admin",
+  "employerName": "Admin Company",
+  "employerEmail": "admin@example.com",
+  "usertype": 0,
+  "password": "$2b$10$qQqTrx6GbjqDHwjNTYpjyuqVLlWdzdtVnYCzYsRsn6n2Yo/08hy2e",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67afb3412a963306b6aa1743"
+  },
+  "systemUserName": "admin2",
+  "employerName": "Admin2 Company",
+  "employerEmail": "admin2@example.com",
+  "usertype": 0,
+  "password": "$2b$10$YCY3gNKCr1GU26608E3.0.saCAQAhqPBsiJLyY82y48DMYA01cJHC",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67afb3422a963306b6aa1745"
+  },
+  "systemUserName": "employer1",
+  "employerName": "Employer1 Company",
+  "employerEmail": "employer1@example.com",
+  "usertype": 1,
+  "password": "$2b$10$IMyC1k2o/krQGD3SB.OKbudqZt1Ax5pGjzt33aldZ.CXfPylDGumG",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67afb3422a963306b6aa1747"
+  },
+  "systemUserName": "employer2",
+  "employerName": "Employer2 Company",
+  "employerEmail": "employer2@example.com",
+  "usertype": 1,
+  "password": "$2b$10$Z3s1vC3SsIpjsnZ/2JHma.XF78mPUOsjPJo4jve8hIKnw00QHcyXW",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67afb3422a963306b6aa1749"
+  },
+  "systemUserName": "employer3",
+  "employerName": "Employer3 Company",
+  "employerEmail": "employer3@example.com",
+  "usertype": 1,
+  "password": "$2b$10$vrlB.Ce7aa4vcD1hUTrnjuaiZOjgaTeajiMJQobTDHl2DjH0vPPM6",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67afb3422a963306b6aa174b"
+  },
+  "systemUserName": "employer4",
+  "employerName": "Employer4 Company",
+  "employerEmail": "employer4@example.com",
+  "usertype": 1,
+  "password": "$2b$10$aDij3umtXW5/ibSiklDVUuH6EbxyeBo7Bc/iaecHeG/fYXWYiUjQ.",
+  "__v": 0
+}]
