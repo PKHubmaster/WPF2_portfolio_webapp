@@ -9,6 +9,11 @@ export async function POST(req: Request) {
     await connectToDB();
     const { name, email, password } = await req.json();
 
+    // Validate request data
+    if (!name || !email || !password) {
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -23,6 +28,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "User created successfully!" }, { status: 201 });
   } catch (error) {
+    console.error(error); // Log error for debugging
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -34,6 +40,7 @@ export async function GET() {
     const users = await User.find();
     return NextResponse.json(users);
   } catch (error) {
+    console.error(error); // Log error for debugging
     return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
   }
 }
@@ -44,6 +51,11 @@ export async function PUT(req: Request) {
     await connectToDB();
     const { id, name, email } = await req.json();
 
+    // Validate request data
+    if (!id || !name || !email) {
+      return NextResponse.json({ error: "ID, name, and email are required" }, { status: 400 });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(id, { name, email }, { new: true });
 
     if (!updatedUser) {
@@ -52,6 +64,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
+    console.error(error); // Log error for debugging
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }
@@ -62,6 +75,11 @@ export async function DELETE(req: Request) {
     await connectToDB();
     const { id } = await req.json();
 
+    // Validate request data
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -69,6 +87,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ message: "User deleted successfully" });
   } catch (error) {
+    console.error(error); // Log error for debugging
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
