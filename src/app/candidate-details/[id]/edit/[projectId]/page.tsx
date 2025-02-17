@@ -5,73 +5,77 @@ import { useRouter, useParams } from 'next/navigation';
 
 const EditProjectPage = () => {
   const { id, projectId } = useParams(); // Get the candidate ID and project ID from the URL
-  const [project, setProject] = useState<any>(null);
-  const [formData, setFormData] = useState({
+  const [project, setProject] = useState<any>(null); // State to store the fetched project data
+  const [formData, setFormData] = useState({ // State to hold form input values
     name: '',
     description: '',
     dateCompleted: '',
     githubLink: '',
     liveLink: '',
   });
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const [loading, setLoading] = useState(true); // State to track loading status
+  const router = useRouter(); // Next.js router for navigation
 
   useEffect(() => {
+    // Fetch project data using GET request when the component mounts or the params change
     const fetchProject = async () => {
       try {
-        const response = await fetch(`/api/candidate/${id}/projects/${projectId}`);
-        const data = await response.json();
+        // Check if id and projectId exist to avoid triggering an empty fetch request
+        if (id && projectId) {
+          const response = await fetch(`/api/candidate/${id}/projects/${projectId}`); // GET request
+          const data = await response.json();
 
-        if (response.ok) {
-          setProject(data);
-          setFormData({
-            name: data.name,
-            description: data.description,
-            dateCompleted: data.dateCompleted,
-            githubLink: data.githubLink,
-            liveLink: data.liveLink,
-          });
-        } else {
-          console.error('Project not found');
+          if (response.ok) {
+            setProject(data); // Store fetched project data
+            setFormData({
+              name: data.name,
+              description: data.description,
+              dateCompleted: data.dateCompleted,
+              githubLink: data.githubLink,
+              liveLink: data.liveLink,
+            });
+          } else {
+            console.error('Project not found');
+          }
         }
-        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch project:', error);
-        setLoading(false);
+      } finally {
+        setLoading(false); // Stop loading after fetch attempt
       }
     };
 
-    if (id && projectId) {
-      fetchProject();
-    }
-  }, [id, projectId]);
+    fetchProject(); // Call the fetch function on component mount or when params change
+  }, [id, projectId]); // Re-run effect when the ID or project ID changes
 
+  // Handle changes in form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission to update the project using PUT request
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); // Prevent default form submission
+    setLoading(true); // Start loading when submitting
 
     try {
       const response = await fetch(`/api/candidate/${id}/projects/${projectId}`, {
-        method: 'PUT',
+        method: 'PUT', // PUT request to update the project
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), // Send updated form data as JSON
       });
 
       if (response.ok) {
-        router.push(`/candidate-details/${id}`); // Redirect back to candidate details page after successful update
+        router.push(`/candidate-details/${id}`); // Redirect to candidate details page after successful update
       } else {
         console.error('Failed to update project');
       }
     } catch (error) {
       console.error('Error updating project:', error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading after submission attempt
     }
   };
 
@@ -85,6 +89,7 @@ const EditProjectPage = () => {
       </div>
 
       {loading ? (
+        // Show a loading spinner while fetching or submitting
         <div className="text-center">
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -92,6 +97,7 @@ const EditProjectPage = () => {
           <p>Loading project details...</p>
         </div>
       ) : (
+        // Display the form with project data if loading is done
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Project Name</label>
@@ -156,7 +162,7 @@ const EditProjectPage = () => {
           </div>
 
           <button type="submit" className="btn btn-primary">
-            Update Project
+            Update Project (PUT)
           </button>
         </form>
       )}

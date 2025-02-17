@@ -24,7 +24,8 @@ const AddProjectPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/candidate/${id}/projects`, {
+      // Fixed route to POST to /api/candidate/[id]
+      const response = await fetch(`/api/candidate/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
