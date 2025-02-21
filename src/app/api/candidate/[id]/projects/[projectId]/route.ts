@@ -16,7 +16,74 @@ async function getClient() {
   return client;
 }
 
-// GET a specific project by ID
+// DELETE a specific project by ID and by candidate ID
+export async function DELETE(request: Request, context: { params: { id: string, projectId: string } }) {
+  const { id, projectId } = await context.params;  // ✅ FIXED: Await params
+
+  const client = await getClient();  // Get MongoDB client connection
+  const db = client.db();  // Get database
+  const profilesCollection = db.collection('profiles');  // Use 'profiles' collection (or your collection name)
+
+  // Find the profile by ID and remove the project directly
+  const profile = await profilesCollection.findOne({ _id: new ObjectId(id) });
+
+  if (!profile) {
+    return NextResponse.json({ message: 'Profile not found' }, { status: 404 });
+  }
+
+  // Remove the project manually from the array
+  const updatedProjects = profile.projects.filter((project: { _id: ObjectId }) => project._id.toString() !== projectId);
+
+  const result = await profilesCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { projects: updatedProjects } }
+  );
+
+  if (result.modifiedCount === 0) {
+    return NextResponse.json({ message: 'Project not found or could not be removed' }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: 'Project deleted successfully' });
+}
+
+// PUT to update a specific project by ID and by candidate ID
+export async function PUT(
+  request: Request,
+  context: { params: { id: string; projectId: string } }
+) {
+  const { id, projectId } = await context.params; // ✅ FIXED: Await params
+
+  const client = await getClient(); // Corrected to use getClient() instead of dbConnect()
+  const db = client.db(); // Get database
+  const profilesCollection = db.collection('profiles'); // Make sure this is the correct collection
+
+  const body = await request.json();
+  const { name, description, dateCompleted, githubLink, liveLink } = body;
+
+  const formattedDate = new Date(dateCompleted).toISOString().split("T")[0];
+
+  const updatedProfile = await profilesCollection.findOneAndUpdate(
+    { _id: new ObjectId(id), "projects._id": new ObjectId(projectId) },
+    {
+      $set: {
+        "projects.$.name": name,
+        "projects.$.description": description,
+        "projects.$.dateCompleted": formattedDate,
+        "projects.$.githubLink": githubLink,
+        "projects.$.liveLink": liveLink,
+      },
+    },
+    { returnDocument: 'after' }
+  );
+
+  if (!updatedProfile) {
+    return NextResponse.json({ message: "Profile or project not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: "Project updated successfully" });
+}
+
+// GET a specific project by ID and by candidate ID
 export async function GET(req: Request, { params }: { params: { id: string, projectId: string } }) {
   try {
     // Await params for safety in Next.js dynamic API routes
@@ -47,86 +114,3 @@ export async function GET(req: Request, { params }: { params: { id: string, proj
   }
 }
 
-// DELETE a project by ID
-export async function DELETE(req: Request, { params }: { params: { id: string, projectId: string } }) {
-  try {
-    // Await params for safety in Next.js dynamic API routes
-    const { id, projectId } = await Promise.resolve(params); // Ensure params are awaited
-
-    console.log(`Attempting to delete project ${projectId} from profile ${id}`);
-    
-    const profileId = new ObjectId(id);
-    const projectIdObj = new ObjectId(projectId);
-
-    const client = await getClient();
-
-    // Remove the project from the profile's projects array
-    const updatedProfile = await client
-      .db()
-      .collection('profiles')
-      .findOneAndUpdate(
-        { _id: profileId },
-        { $pull: { projects: { _id: projectIdObj } } },
-        { returnDocument: 'after' }
-      );
-
-    console.log('Updated profile after deletion:', updatedProfile.value);
-
-    if (!updatedProfile.value) {
-      console.log(`Profile or project not found: Profile ID ${id}, Project ID ${projectId}`);
-      return NextResponse.json({ error: 'Profile or project not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: 'Project deleted successfully' }, { status: 200 });
-  } catch (error) {
-    console.error('Failed to delete project:', error);
-    return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
-  }
-}
-
-
-// PUT to update a project by ID
-export async function PUT(req: NextRequest, { params }: { params: { id: string; projectId: string } }) {
-  try {
-    // Await params for safety in Next.js dynamic API routes
-    const { id, projectId } = await Promise.resolve(params); // Ensure params are awaited
-
-    // Ensure params are properly destructured from request body
-    const { name, description, dateCompleted, githubLink, liveLink } = await req.json();
-
-    // Format the date to "YYYY-MM-DD"
-    const formattedDate = new Date(dateCompleted).toISOString().split('T')[0];
-
-    // Convert params to ObjectId
-    const profileId = new ObjectId(id);
-    const projectIdObj = new ObjectId(projectId);
-
-    const client = await getClient();
-    const db = client.db();
-    const profilesCollection = db.collection('profiles');
-
-    // Perform the update operation
-    const result = await profilesCollection.findOneAndUpdate(
-      { _id: profileId, 'projects._id': projectIdObj },
-      {
-        $set: {
-          'projects.$.name': name,
-          'projects.$.description': description,
-          'projects.$.dateCompleted': formattedDate,  // Use the formatted date here
-          'projects.$.githubLink': githubLink,
-          'projects.$.liveLink': liveLink,
-        },
-      },
-      { returnDocument: 'after' }
-    );
-
-    if (result.value) {
-      return NextResponse.json({ message: 'Project updated successfully', updatedProfile: result.value });
-    } else {
-      return NextResponse.json({ error: 'Profile or project not found' }, { status: 404 });
-    }
-  } catch (error) {
-    console.error('Error updating project:', error);
-    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
-  }
-}
