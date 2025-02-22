@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { MongoClient, ObjectId } from 'mongodb';
-import connectToDatabase from '../../../../../lib/mongodb'; // Adjust path as necessary
+import connectToDatabase from '../../../../../lib/mongodb';
 
 let client: MongoClient;
 

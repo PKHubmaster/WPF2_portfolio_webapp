@@ -31,7 +31,7 @@ systemUserSchema.pre('save', async function(next) {
       next(err);  // Pass the error to the next middleware
     }
   } else {
-    return next();
+    next();  // Move to the next middleware
   }
 });
 
@@ -41,6 +41,6 @@ systemUserSchema.methods.comparePassword = async function(candidatePassword: str
 };
 
 // Create the model using the schema and interface
-const SysUserModel = mongoose.model<ISystemUser>('SystemUsers', systemUserSchema);
+const SysUserModel = mongoose.models.SystemUsers || mongoose.model<ISystemUser>('SystemUsers', systemUserSchema);
 
 export default SysUserModel;

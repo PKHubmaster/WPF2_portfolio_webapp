@@ -1,4 +1,4 @@
-import LoginForm from "./landing_page/page";
+import LoginForm from "./login_page/page";
 export default function Home() {
   return (
     <div>

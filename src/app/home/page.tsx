@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from './home.module.css';
 
 const Home = () => {
   const [profiles, setProfiles] = useState([]);
@@ -26,8 +27,6 @@ const Home = () => {
       try {
         const response = await fetch(`/api/user/${systemUserId}`);
         const data = await response.json();
-
-        console.log('User API response:', data);
 
         if (response.ok) {
           setUserType(data.usertype);
@@ -79,65 +78,65 @@ const Home = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className={styles.container}>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Welcome to the Dashboard</h1>
-        <button className="btn btn-danger" onClick={handleLogout}>
+        <h1 className={styles.heading}>Dashboard</h1>
+        <button className={styles.logoutButton} onClick={handleLogout}>
           Logout
         </button>
       </div>
 
       {loading ? (
         <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <p>Loading candidate profiles...</p>
+          <div className={styles.loadingSpinner}></div>
+          <p className={styles.loadingText}>Loading candidate profiles...</p>
         </div>
       ) : (
         <div>
-          <h2 className="mb-4">Candidate Profiles</h2>
-          <table className="table table-bordered table-hover shadow-sm">
-            <thead className="table-dark">
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profiles.length > 0 ? (
-                profiles.map((profile: any) => (
-                  <tr key={profile._id}>
-                    <td>{profile.employeeFirstName}</td>
-                    <td>{profile.employeeLastName}</td>
-                    <td>
-                      <button
-                        className="btn btn-info btn-sm"
-                        onClick={() => router.push(`/candidate-details/${profile._id}`)}
-                      >
-                        View Candidate Details
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3} className="text-center">No profiles available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <h2 className="mb-4 text-center text-success">Candidate Profiles</h2>
 
-          {/* Conditionally render the button based on userType */}
+          <div className={styles.tableContainer}>
+            <table className={styles.customTable}>
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {profiles.length > 0 ? (
+                  profiles.map((profile: any) => (
+                    <tr key={profile._id}>
+                      <td>{profile.employeeFirstName}</td>
+                      <td>{profile.employeeLastName}</td>
+                      <td>
+                        <button
+                          className={styles.viewDetailsButton}
+                          onClick={() => router.push(`/candidate-details/${profile._id}`)}
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className={styles.noProfiles}>No profiles available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
           <div className="text-center mt-4">
             {userType === 0 && (
-              <button className="btn btn-success" onClick={handleButtonClick}>
+              <button className={`${styles.conditionalButton} ${styles.sendInviteButton}`} onClick={handleButtonClick}>
                 Send Invite to Employer
               </button>
             )}
             {userType === 1 && (
-              <button className="btn btn-primary" onClick={handleButtonClick}>
+              <button className={`${styles.conditionalButton} ${styles.requestProfileButton}`} onClick={handleButtonClick}>
                 Request to View Candidate Profile
               </button>
             )}
