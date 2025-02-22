@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectToDatabase from "../../../../lib/mongodb";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
@@ -29,8 +30,16 @@ export async function POST(req: Request) {
     const mongoose = await connectToDatabase();
     const db = mongoose.connection.db;
 
+    // Convert systemUser and profile to ObjectId properly
+    const requestData = {
+      systemUser: new ObjectId(data.systemUser), // Convert employerId to ObjectId
+      profile: new ObjectId(data.profile),       // Convert selectedCandidate to ObjectId
+      requestDate: new Date(data.requestDate).toISOString(), // Convert Date to ISO string
+      accessStatus: data.accessStatus,           // Keep accessStatus as-is
+    };
+
     // Insert new record into 'userprofileaccess' collection
-    const result = await db.collection("userprofileaccess").insertOne(data);
+    const result = await db.collection("userprofileaccess").insertOne(requestData);
 
     return NextResponse.json({ message: "Request submitted successfully", result });
   } catch (error) {
