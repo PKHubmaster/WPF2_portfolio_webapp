@@ -16,7 +16,7 @@ const Home = () => {
     if (userId) {
       setSystemUserId(userId);
     } else {
-      router.push('/landing_page');
+      router.push('/login_page');
     }
   }, [router]);
 
@@ -66,7 +66,7 @@ const Home = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('systemUserId');
-    router.push('/landing_page');
+    router.push('/login_page');
   };
 
   const handleButtonClick = () => {
