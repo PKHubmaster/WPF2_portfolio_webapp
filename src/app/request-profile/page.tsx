@@ -1,62 +1,140 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Define types for employer and candidate
+interface Employer {
+  _id: string;
+  employerName: string;
+  employerEmail: string;
+}
+
+interface Candidate {
+  _id: string;
+  employeeFirstName: string;
+  employeeLastName: string;
+}
+
 const RequestProfile = () => {
   const [formData, setFormData] = useState({
-    employerName: "",
+    employerId: "",
     employerEmail: "",
-    selectedCandidate: "Apurva",
+    selectedCandidate: "",
   });
 
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [employers, setEmployers] = useState<Employer[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
+  // Fetch candidates and employers on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('/api/requestprofileaccess');
+      const data = await response.json();
+
+      setCandidates(data.candidates);
+      setEmployers(data.employers); // Remove filtering condition
+    };
+
+    fetchData();
+  }, []);
+
+  // Handle form data change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    // Auto-populate email when employer is selected
+    if (name === "employerId") {
+      const selectedEmployer = employers.find(emp => emp._id === value);
+      setFormData({
+        ...formData,
+        employerId: value,
+        employerEmail: selectedEmployer ? selectedEmployer.employerEmail : "",
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setModalOpen(true);
+
+    const requestData = {
+      systemUser: formData.employerId, 
+      profile: formData.selectedCandidate, 
+      requestDate: new Date().toISOString(),
+      accessStatus: "Approved",
+    };
+
+    await fetch('/api/requestprofileaccess', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 position-relative bg-cover" 
       style={{ backgroundImage: "url('/sign_in&sign_up_bg.jpg')" }}>
-      
-      {/* Dark Overlay */}
+
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
-      {/* Form Card */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.5 }} 
         className="card p-4 shadow rounded-4 position-relative glassmorphism text-dark"
         style={{ width: "750px", height: "450px", zIndex: 10 }}>
-        
+
         <h2 className="text-center mb-4">Request access to a profile</h2>
         <form onSubmit={handleSubmit}>
+          
+          {/* Candidate Selection */}
           <div className="mb-3">
             <label className="form-label">Select Candidate:</label>
             <select className="form-select" name="selectedCandidate" value={formData.selectedCandidate} onChange={handleChange}>
-              {["Apurva", "Parm", "Christian", "Sue", "John"].map((name) => (
-                <option key={name}>{name}</option>
+              <option value="" disabled>Select a candidate</option>
+              {candidates.map((candidate) => (
+                <option key={candidate._id} value={candidate._id}>
+                  {candidate.employeeFirstName} {candidate.employeeLastName}
+                </option>
               ))}
             </select>
           </div>
+
+          {/* Employer Selection */}
           <div className="mb-3">
             <label className="form-label">Your Name (Employer):</label>
-            <input type="text" className="form-control" name="employerName" value={formData.employerName} onChange={handleChange} />
+            <select className="form-select" name="employerId" value={formData.employerId} onChange={handleChange}>
+              <option value="" disabled>Select an employer</option>
+              {employers.map((employer) => (
+                <option key={employer._id} value={employer._id}>
+                  {employer.employerName}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* Employer Email - Auto-populated */}
           <div className="mb-3">
-            <label className="form-label">Your Email:</label>
-            <input type="email" className="form-control" name="employerEmail" value={formData.employerEmail} onChange={handleChange} />
+            <label className="form-label">Your Registered Email:</label>
+            <input 
+              type="email" 
+              className="form-control" 
+              name="employerEmail" 
+              value={formData.employerEmail} 
+              readOnly 
+            />
           </div>
+
           <button type="submit" className="btn btn-primary w-100">Submit</button>
         </form>
         <button className="btn btn-secondary w-100 mt-3" onClick={() => router.push("/home")}>Back to Home</button>
@@ -73,7 +151,7 @@ const RequestProfile = () => {
               </div>
               <div className="modal-body">
                 <p><b>Candidate:</b> {formData.selectedCandidate}</p>
-                <p><b>Employer Name:</b> {formData.employerName}</p>
+                <p><b>Employer Name:</b> {employers.find(emp => emp._id === formData.employerId)?.employerName}</p>
                 <p><b>Employer Email:</b> {formData.employerEmail}</p>
                 <p><i>Request has been sent to portfolio_manager@hotmail.com</i></p>
               </div>
@@ -85,7 +163,6 @@ const RequestProfile = () => {
         </div>
       )}
 
-      {/* Styles */}
       <style jsx>{`
         .bg-cover {
           background-size: cover;

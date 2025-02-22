@@ -43,7 +43,8 @@ export async function DELETE(request: Request, context: { params: { id: string, 
     return NextResponse.json({ message: 'Project not found or could not be removed' }, { status: 404 });
   }
 
-  return NextResponse.json({ message: 'Project deleted successfully' });
+  return NextResponse.json({ message: 'Project deleted successfully', refresh: true }); // ✅ Send refresh flag
+  
 }
 
 // PUT to update a specific project by ID and by candidate ID
