@@ -85,7 +85,8 @@ const Home = () => {
           Logout
         </button>
       </div>
-
+  
+      {/* Button moved here before the table */}
       {loading ? (
         <div className="text-center">
           <div className={styles.loadingSpinner}></div>
@@ -93,8 +94,21 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <h2 className="mb-4 text-center text-success">Candidate Profiles</h2>
+          <span><h2 className="mb-4 text-center text-success">Candidate Profiles</h2></span>
+          <span> <div className="text-center mb-4">
+      {userType === 0 && (
+        <button className={`${styles.conditionalButton} ${styles.sendInviteButton}`} onClick={handleButtonClick}>
+          Send Invite to Employer
+        </button>
+      )}
+      {userType === 1 && (
+        <button className={`${styles.conditionalButton} ${styles.requestProfileButton}`} onClick={handleButtonClick}>
+          Request to View Candidate Profile
+        </button>
+      )}
+    </div></span>
 
+  
           <div className={styles.tableContainer}>
             <table className={styles.customTable}>
               <thead>
@@ -128,23 +142,10 @@ const Home = () => {
               </tbody>
             </table>
           </div>
-
-          <div className="text-center mt-4">
-            {userType === 0 && (
-              <button className={`${styles.conditionalButton} ${styles.sendInviteButton}`} onClick={handleButtonClick}>
-                Send Invite to Employer
-              </button>
-            )}
-            {userType === 1 && (
-              <button className={`${styles.conditionalButton} ${styles.requestProfileButton}`} onClick={handleButtonClick}>
-                Request to View Candidate Profile
-              </button>
-            )}
-          </div>
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default Home;

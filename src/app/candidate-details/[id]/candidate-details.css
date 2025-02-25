@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Soleto&display=swap');
+
+body {
+  font-family: 'Soleto', sans-serif;
+}
+
+.pageWrapper {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #2D142C; /* Deep rich background */
+  color: white;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 2px solid #EE4540; /* Accent color for header */
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.add_project, .back_to_home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #EE4540; /* Strong red background */
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add_project:hover, .back_to_home:hover {
+  background: #C72C41; /* Slightly darker red */
+}
+
+.contentSection {
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.candidateInfo {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #501A32; /* Deep purple background */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.sectionTitle {
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom: 2px solid #C72C41; /* Accent color */
+  padding-bottom: 5px;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.customTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  color: #EEE; /* Light color for table */
+}
+
+.customTable th, .customTable td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: left;
+}
+
+.customTable th {
+  background-color: #801336; /* Rich purple for table header */
+  color: white;
+}
+
+.customTable tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.viewDetailsButton {
+  color: #EE4540;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.viewDetailsButton:hover {
+  color: #C72C41;
+  text-decoration: underline;
+}
+
+.editButton, .deleteButton {
+  padding: 8px 12px;
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.editButton {
+  background-color: #C72C41; /* Darker red */
+  color: white;
+}
+
+.deleteButton {
+  background-color: #EE4540; /* Bold red */
+  color: white;
+}
+
+.skillsList {
+  list-style-type: none;
+  margin-top: 10px;
+  padding: 0;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  opacity: 0;
+  animation: fadeInSkills 1.5s forwards;
+}
+
+.skillItem {
+  background: #501A32; /* Darker purple */
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: skillAppear 1s ease-out forwards;
+  transition: background-color 0.3s ease;
+}
+
+.skillItem:hover {
+  background-color: #EE4540; /* Bright red highlight */
+}
+
+.skillItem:nth-child(even) {
+  animation-delay: 0.2s;
+}
+
+.skillItem:nth-child(odd) {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInSkills {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes skillAppear {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.loadingContainer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loadingText {
+  font-size: 16px;
+  color: white;
+  margin-top: 10px;
+}
+
+.profileCard {
+  background: #2D142C; /* Rich background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  margin: 20px auto;
+  color: white;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  transform: scale(0.95);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profileCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.profileHeading {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.profileDetails p {
+  margin: 5px 0;
+}
+
+.noProfile {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-top: 20px;
+}

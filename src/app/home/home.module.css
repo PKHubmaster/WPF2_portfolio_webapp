@@ -1,18 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Soleto&display=swap');
+
+body {
+  font-family: 'Soleto', sans-serif;
+  background-color: #2D142C;
+  color: white;
+}
+
 .container {
-  background-color: #3c373e;
+  background-color: #501A32;
   min-height: 100vh;
   padding: 20px;
   color: white;
 }
 
 .heading {
-  color: white;
+  color: #EE4540;
   font-size: 24px;
   font-weight: bold;
 }
 
 .logoutButton {
-  background: #f44336;
+  background: #C72C41;
   border: none;
   padding: 8px 16px;
   color: white;
@@ -22,8 +30,8 @@
 }
 
 .logoutButton:hover {
-  background: #fdd114; /* Yellow background */
-  color: black; /* Change text color to black when hovered */
+  background: #801336;
+  color: #2D142C;
 }
 
 .tableContainer {
@@ -33,151 +41,49 @@
 .customTable {
   width: 100%;
   border-collapse: collapse;
-  color: #777;
+  color: #C72C41;
 }
 
 .customTable tbody tr:nth-child(odd) {
-  background-color: #39343b; /* Dark background for odd rows */
+  background-color: #501A32;
 }
 
 .customTable tbody tr:nth-child(even) {
-  background-color: transparent; /* Transparent background for even rows */
+  background-color: #2D142C;
 }
 
 .customTable tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(238, 69, 64, 0.2);
 }
 
 .customTable td {
-  transition: color 0.3s ease; /* Smooth transition for text color */
+  transition: color 0.3s ease;
 }
 
 .customTable td:hover {
-  color: #fdd114; /* Yellow text color */
+  color: #EE4540;
 }
 
 .viewDetailsButton {
-  all: unset;
-  position: relative;
-  display: inline-flex;
-  height: 3.5rem;
-  align-items: center;
+  background: #801336;
   border-radius: 9999px;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  font-family: Segoe UI, sans-serif;
+  padding: 12px 24px;
   font-size: 1.2rem;
-  font-weight: 640;
-  color: #fafaf6;
-  letter-spacing: -0.06em;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease;
   cursor: pointer;
-  overflow: hidden;
 }
 
-.viewDetailsButton .button-bg {
-  border-color: rgba(255, 208, 116);
-  background-color: rgba(255, 208, 116);
-}
-
-.viewDetailsButton .button-inner,
-.viewDetailsButton .button-inner-hover,
-.viewDetailsButton .button-inner-static {
-  pointer-events: none;
-  display: block;
-}
-
-.viewDetailsButton .button-inner {
-  position: relative;
-}
-
-.viewDetailsButton .button-inner-hover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transform: translateY(70%);
-}
-
-.viewDetailsButton .button-bg {
-  overflow: hidden;
-  border-radius: 2rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: scale(1);
-  transition: transform 1.8s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.viewDetailsButton .button-bg-layer {
-  display: block;
-}
-
-.viewDetailsButton .button-bg-layers {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  top: -60%;
-  aspect-ratio: 1 / 1;
-  width: max(200%, 10rem);
-}
-
-.viewDetailsButton .button-bg-layer {
-  border-radius: 9999px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: scale(0);
-}
-
-.viewDetailsButton .button-bg-layer.-purple {
-  background-color: rgba(163, 116, 255);
-}
-
-.viewDetailsButton:hover .button-inner-static {
-  opacity: 0;
-  transform: translateY(-70%);
-  transition:
-    transform 1.4s cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 0.3s linear;
-}
-
-.viewDetailsButton:hover .button-inner-hover {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    transform 1.4s cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 1.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.viewDetailsButton:hover .button-bg-layer {
-  transition:
-    transform 1.3s cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 0.3s linear;
-}
-
-.viewDetailsButton:hover .button-bg-layer-1 {
-  transform: scale(1);
-}
-
-.viewDetailsButton:hover .button-bg-layer-2 {
-  transition-delay: 0.1s;
-  transform: scale(1);
-}
-
-.viewDetailsButton:hover .button-bg-layer-3 {
-  transition-delay: 0.2s;
-  transform: scale(1);
+.viewDetailsButton:hover {
+  background: #C72C41;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
   border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top: 4px solid #fdd114;
+  border-top: 4px solid #EE4540;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto;
@@ -195,31 +101,28 @@
 }
 
 .conditionalButton {
-  all: unset;
   padding: 10px 20px;
-  border: none;
   border-radius: 5px;
-  color: white;
   font-size: 14px;
   font-weight: bold;
-  transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sendInviteButton {
-  background: #1e88e5;
+  background: #EE4540;
 }
 
 .sendInviteButton:hover {
-  background: #fdd114; /* Yellow background */
-  color: black; /* Change text color to black when hovered */
+  background: #C72C41;
+  color: white;
 }
 
 .requestProfileButton {
-  background: #43a047;
+  background: #501A32;
 }
 
 .requestProfileButton:hover {
-  background: #fdd114; /* Yellow background */
-  color: black; /* Change text color to black when hovered */
+  background: #801336;
+  color: white;
 }
