@@ -8,15 +8,36 @@ import { useRouter } from 'next/navigation';
 const SendInvite = () => {
   const [formData, setFormData] = useState({ employerName: '', employerEmail: '' });
   const [showModal, setShowModal] = useState(false);
+  const [modalFade, setModalFade] = useState(true); // Controls fade effect
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowModal(true);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/mailsender', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error('Failed to send invite');
+
+      setShowModal(true); // Show modal
+      setTimeout(() => setModalFade(false), 2500); // Start fading at 2.5s
+      setTimeout(() => router.push('/home'), 3000); // Redirect at 3s
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error sending invite. Please try again.');
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -37,36 +58,34 @@ const SendInvite = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Employer Name:</label>
-            <input type="text" className="form-control" name="employerName" value={formData.employerName} onChange={handleChange} />
+            <input type="text" className="form-control" name="employerName" value={formData.employerName} onChange={handleChange} required />
           </div>
           <div className="mb-3">
             <label className="form-label">Employer Email:</label>
-            <input type="email" className="form-control" name="employerEmail" value={formData.employerEmail} onChange={handleChange} />
+            <input type="email" className="form-control" name="employerEmail" value={formData.employerEmail} onChange={handleChange} required />
           </div>
           <p><b>Candidate:</b> John Doe</p>
           <p><i>Check your email for a temporary password.</i></p>
-          <button type="submit" className="btn btn-primary w-100">Send Invite</button>
+          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send Invite'}
+          </button>
         </form>
 
         <button className="btn btn-secondary w-100 mt-3" onClick={() => router.push('/home')}>Back to Home</button>
       </motion.div>
 
+      {/* Success Modal */}
       {showModal && (
-        <div className="modal show d-block" style={{ zIndex: 1050 }} tabIndex={-1}>
+        <div className={`modal show d-block ${modalFade ? 'opacity-100' : 'opacity-0'}`} 
+          style={{ transition: 'opacity 0.5s ease-in-out', zIndex: 1050 }}>
           <div className="modal-dialog">
             <div className="modal-content text-dark">
               <div className="modal-header">
-                <h5 className="modal-title">Invite Summary</h5>
-                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                <h5 className="modal-title">Success 🎉</h5>
               </div>
               <div className="modal-body">
-                <p><b>Employer Name:</b> {formData.employerName}</p>
-                <p><b>Employer Email:</b> {formData.employerEmail}</p>
-                <p><b>Candidate:</b> John Doe</p>
-                <p><i>Check your email for a temporary password.</i></p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
+                <p>Email invite successfully sent to <b>{formData.employerName}</b>!</p>
+                <p>Redirecting to Home...</p>
               </div>
             </div>
           </div>
