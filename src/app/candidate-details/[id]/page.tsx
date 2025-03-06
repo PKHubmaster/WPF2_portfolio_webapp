@@ -32,12 +32,43 @@ const CandidateDetails = () => {
     }
   }, [id]);
 
-  const handleDelete = async (projectId: string) => {
+  // Handle project deletion
+  const handleProjectDelete = async (projectId: string) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
-      await fetch(`/api/candidate/${id}/projects/${projectId}`, {
-        method: 'DELETE',
-      });
-      router.refresh(); // Refresh the page to show updated data
+      try {
+        await fetch(`/api/candidate/${id}/projects/${projectId}`, { method: 'DELETE' });
+
+        // Optimistic UI update: Remove the deleted project from state
+        setProfile((prevProfile: any) => ({
+          ...prevProfile,
+          projects: prevProfile.projects.filter((project: any) => project._id !== projectId),
+        }));
+
+        // Optional: You can refresh the page or navigate back
+        router.push(`/candidate-details/${id}`); // or router.refresh();
+      } catch (error) {
+        console.error('Failed to delete project:', error);
+      }
+    }
+  };
+
+  // Handle skill deletion
+  const handleSkillDelete = async (skillId: string) => {
+    if (window.confirm('Are you sure you want to delete this skill?')) {
+      try {
+        await fetch(`/api/candidate/${id}/skills/${skillId}`, { method: 'DELETE' });
+
+        // Optimistic UI update: Remove the deleted skill from state
+        setProfile((prevProfile: any) => ({
+          ...prevProfile,
+          skills: prevProfile.skills.filter((skill: any) => skill._id !== skillId),
+        }));
+
+        // Optional: Refresh the page or navigate back
+        router.push(`/candidate-details/${id}`); // or router.refresh();
+      } catch (error) {
+        console.error('Failed to delete skill:', error);
+      }
     }
   };
 
@@ -45,9 +76,6 @@ const CandidateDetails = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold">Candidate Details</h1>
-        <button className="btn btn-success" onClick={() => router.push(`/candidate-details/${id}/add`)}>
-          Add Project
-        </button>
         <button className="btn btn-primary" onClick={() => router.push('/home')}>
           Back to Dashboard
         </button>
@@ -74,7 +102,12 @@ const CandidateDetails = () => {
               </a>
             </p>
 
-            <h4 className="mt-4 mb-2">Projects</h4>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <h4 className="mt-4 mb-2">Projects</h4>
+              <button className="btn btn-success" onClick={() => router.push(`/candidate-details/${id}/add`)}>
+                Add Project
+              </button>
+            </div>
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -108,7 +141,7 @@ const CandidateDetails = () => {
                         >
                           Edit
                         </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(project._id)}>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleProjectDelete(project._id)}>
                           Delete
                         </button>
                       </td>
@@ -122,11 +155,32 @@ const CandidateDetails = () => {
               </tbody>
             </table>
 
-            <h4 className="mt-4">Skills</h4>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <h4 className="mt-4">Skills</h4>
+              <button className="btn btn-info" onClick={() => router.push(`/candidate-details/${id}/addSkill`)}>
+                Add Skill
+              </button>
+            </div>
             <ul className="list-group">
               {Array.isArray(profile.skills) && profile.skills.length > 0 ? (
                 profile.skills.map((skill: any, index: number) => (
-                  <li key={index} className="list-group-item">{skill.name}</li>
+                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                    {skill.name}
+                    <div>
+                      <button
+                        className="btn btn-warning btn-sm me-2"
+                        onClick={() => router.push(`/candidate-details/${id}/editSkill/${skill._id}`)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleSkillDelete(skill._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
                 ))
               ) : (
                 <li className="list-group-item">No skills listed</li>
