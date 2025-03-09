@@ -7,9 +7,45 @@ const CandidateDetails = () => {
   const { id } = useParams(); // Get the candidate ID from the URL
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [systemUserId, setSystemUserId] = useState<string | null>(null);
+  const [userType, setUserType] = useState<number | null>(null); // New state to store userType
   const router = useRouter();
 
   useEffect(() => {
+    const userId = localStorage.getItem('systemUserId');
+    if (userId) {
+      setSystemUserId(userId);
+    } else {
+      router.push('/landing_page');
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!systemUserId) return;
+
+    const fetchUserType = async () => {
+      try {
+        const response = await fetch(`/api/user/${systemUserId}`);
+        const data = await response.json();
+
+        console.log('User API response:', data);
+
+        if (response.ok) {
+          setUserType(data.usertype); // Set the userType
+        } else {
+          console.error('Error fetching user type:', data.error);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user type:', error);
+      }
+    };
+
+    fetchUserType();
+  }, [systemUserId]);
+
+  useEffect(() => {
+    if (!id) return;
+
     const fetchProfile = async () => {
       try {
         const response = await fetch(`/api/candidate/${id}`);
@@ -27,9 +63,7 @@ const CandidateDetails = () => {
       }
     };
 
-    if (id) {
-      fetchProfile();
-    }
+    fetchProfile();
   }, [id]);
 
   // Handle project deletion
@@ -102,12 +136,15 @@ const CandidateDetails = () => {
               </a>
             </p>
 
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <h4 className="mt-4 mb-2">Projects</h4>
-              <button className="btn btn-success" onClick={() => router.push(`/candidate-details/${id}/add`)}>
-                Add Project
-              </button>
-            </div>
+            {userType === 0 && ( // Only show "Add Project" if userType is 0 (Admin)
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h4 className="mt-4 mb-2">Projects</h4>
+                <button className="btn btn-success" onClick={() => router.push(`/candidate-details/${id}/add`)}>
+                  Add Project
+                </button>
+              </div>
+            )}
+
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -135,15 +172,19 @@ const CandidateDetails = () => {
                         </a>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-warning btn-sm me-2"
-                          onClick={() => router.push(`/candidate-details/${id}/edit/${project._id}`)}
-                        >
-                          Edit
-                        </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleProjectDelete(project._id)}>
-                          Delete
-                        </button>
+                        {userType === 0 && ( // Only show "Edit" and "Delete" buttons for Admin (userType = 0)
+                          <>
+                            <button
+                              className="btn btn-warning btn-sm me-2"
+                              onClick={() => router.push(`/candidate-details/${id}/edit/${project._id}`)}
+                            >
+                              Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => handleProjectDelete(project._id)}>
+                              Delete
+                            </button>
+                          </>
+                        )}
                       </td>
                     </tr>
                   ))
@@ -155,30 +196,37 @@ const CandidateDetails = () => {
               </tbody>
             </table>
 
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <h4 className="mt-4">Skills</h4>
-              <button className="btn btn-info" onClick={() => router.push(`/candidate-details/${id}/addSkill`)}>
-                Add Skill
-              </button>
-            </div>
+            {userType === 0 && ( // Only show "Add Skill" button for Admin (userType = 0)
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h4 className="mt-4">Skills</h4>
+                <button className="btn btn-info" onClick={() => router.push(`/candidate-details/${id}/addSkill`)}>
+                  Add Skill
+                </button>
+              </div>
+            )}
+
             <ul className="list-group">
               {Array.isArray(profile.skills) && profile.skills.length > 0 ? (
                 profile.skills.map((skill: any, index: number) => (
                   <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                     {skill.name}
                     <div>
-                      <button
-                        className="btn btn-warning btn-sm me-2"
-                        onClick={() => router.push(`/candidate-details/${id}/editSkill/${skill._id}`)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleSkillDelete(skill._id)}
-                      >
-                        Delete
-                      </button>
+                      {userType === 0 && ( // Only show "Edit" and "Delete" buttons for Admin (userType = 0)
+                        <>
+                          <button
+                            className="btn btn-warning btn-sm me-2"
+                            onClick={() => router.push(`/candidate-details/${id}/editSkill/${skill._id}`)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleSkillDelete(skill._id)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                   </li>
                 ))
