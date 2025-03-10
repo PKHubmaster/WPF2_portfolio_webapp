@@ -83,6 +83,11 @@ const Home = () => {
     router.push('/approvals');
   };
 
+  const handleAddNewProfile = () => {
+    // Navigate to the new profile page
+    router.push('/new-profile');
+  };
+
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -104,9 +109,17 @@ const Home = () => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Profiles</h2>
             {userType === 0 && (
-              <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
-                Review Pending Approvals
-              </button>
+              <div className="d-flex">
+                {/* Add New Profile button */}
+                <button className="btn btn-success mt-2 me-2" onClick={handleAddNewProfile}>
+                  Add New Profile
+                </button>
+
+                {/* Review Pending Approvals button */}
+                <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
+                  Review Pending Approvals
+                </button>
+              </div>
             )}
           </div>
           <table className="table table-bordered table-hover shadow-sm">

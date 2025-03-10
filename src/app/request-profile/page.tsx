@@ -28,6 +28,7 @@ const RequestProfile = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [employers, setEmployers] = useState<Employer[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalFade, setModalFade] = useState(true); // Controls fade effect
   const router = useRouter();
 
   // Fetch candidates and employers on component mount
@@ -79,6 +80,11 @@ const RequestProfile = () => {
       },
       body: JSON.stringify(requestData),
     });
+
+    // Fade out modal after 2.5 seconds
+    setTimeout(() => setModalFade(false), 2500);
+    // Redirect after 3 seconds
+    setTimeout(() => router.push('/home'), 3000);
   };
 
   return (
@@ -142,7 +148,8 @@ const RequestProfile = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="modal show d-block" style={{ zIndex: 1050 }} tabIndex={-1}>
+        <div className={`modal show d-block ${modalFade ? 'opacity-100' : 'opacity-0'}`} 
+          style={{ transition: 'opacity 0.5s ease-in-out', zIndex: 1050 }} tabIndex={-1}>
           <div className="modal-dialog">
             <div className="modal-content text-dark">
               <div className="modal-header">
