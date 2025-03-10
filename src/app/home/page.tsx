@@ -16,7 +16,7 @@ const Home = () => {
     if (userId) {
       setSystemUserId(userId);
     } else {
-      router.push('/login_page');
+      router.push('/landing_page');
     }
   }, [router]);
 
@@ -66,7 +66,7 @@ const Home = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('systemUserId');
-    router.push('/login_page');
+    router.push('/landing_page');
   };
 
   const handleButtonClick = () => {
@@ -94,7 +94,7 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <span><h2 className="mb-4 text-center text-success">Candidate Profiles</h2></span>
+          <span><h2 className="mb-4 text-center">Candidate Profiles</h2></span>
           <span> <div className="text-center mb-4">
       {userType === 0 && (
         <button className={`${styles.conditionalButton} ${styles.sendInviteButton}`} onClick={handleButtonClick}>
@@ -107,7 +107,6 @@ const Home = () => {
         </button>
       )}
     </div></span>
-
   
           <div className={styles.tableContainer}>
             <table className={styles.customTable}>

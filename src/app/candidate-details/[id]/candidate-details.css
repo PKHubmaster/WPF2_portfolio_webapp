@@ -1,15 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Soleto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Soleto:wght@300;400;600&display=swap');
 
 body {
   font-family: 'Soleto', sans-serif;
+  background-color: black;
+  color: black; /* Changed text color to black */
+  font-size: 16px; /* Increased font size for better readability */
+}
+
+.container {
+  background-color: white;
+  min-height: 100vh;
+  padding: 20px;
+  color: black; /* Changed text color to black */
+}
+
+.heading {
+  color: black; /* Changed text color to black */
+  font-size: 22px; /* Slightly reduced for better proportion */
+  font-weight: 600;
+}
+
+.logoutButton {
+  background: #ADBBDA;
+  border: none;
+  padding: 6px 12px; /* Reduced padding to make it smaller */
+  font-size: 14px; /* Reduced font size */
+  color: black; /* Changed text color to black */
+  font-weight: 500;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logoutButton:hover {
+  background: #EDE8F5;
+  color: #3D52A0;
+}
+
+.customTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: black; /* Changed text color to black */
+  font-size: 14px; /* Adjusted table font size for clarity */
+}
+
+.customTable tbody tr:nth-child(odd) {
+  background-color: grey;
+}
+
+.customTable tbody tr:nth-child(even) {
+  background-color: darkgray;
+}
+
+.customTable tbody tr:hover {
+  background-color: #7091E6; /* Medium Blue */
+  color: #EDE8F5; /* Light Lavender */
+}
+
+.viewDetailsButton {
+  background: #8697C4;
+  border-radius: 25px; /* Reduced border radius */
+  padding: 8px 16px; /* Reduced padding */
+  font-size: 14px; /* Reduced font size */
+  font-weight: 500;
+  color: black; /* Changed text color to black */
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.viewDetailsButton:hover {
+  background: #ADBBDA;
+}
+
+.loadingSpinner {
+  width: 35px; /* Reduced size */
+  height: 35px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top: 3px solid #8697C4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.conditionalButton {
+  padding: 8px 16px; /* Slightly reduced padding */
+  border-radius: 5px;
+  font-size: 13px; /* Reduced font size */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: black; /* Changed text color to black */
+}
+
+.sendInviteButton {
+  background: #8697C4;
+}
+
+.sendInviteButton:hover {
+  background: #ADBBDA;
+  color: black; /* Changed text color to black */
+}
+
+.requestProfileButton {
+  background: #7091E6;
+}
+
+.requestProfileButton:hover {
+  background: #8697C4;
+  color: black; /* Changed text color to black */
 }
 
 .pageWrapper {
   width: 100%;
   min-height: 100vh;
   padding: 20px;
-  background-color: #2D142C; /* Deep rich background */
-  color: white;
+  background-color: #F0F4F8; /* Light background for contrast */
+  color: black; /* Text color adjusted to black for readability */
 }
 
 .headerSection {
@@ -17,7 +127,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  border-bottom: 2px solid #EE4540; /* Accent color for header */
+  border-bottom: 2px solid #7091E6; /* Accent color for header */
 }
 
 .buttonContainer {
@@ -29,7 +139,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #EE4540; /* Strong red background */
+  background: #7091E6; /* Medium Blue background */
   border: none;
   padding: 8px 16px;
   color: white;
@@ -39,7 +149,7 @@ body {
 }
 
 .add_project:hover, .back_to_home:hover {
-  background: #C72C41; /* Slightly darker red */
+  background: #8697C4; /* Lighter Blue */
 }
 
 .contentSection {
@@ -50,7 +160,7 @@ body {
 .candidateInfo {
   padding: 20px;
   border-radius: 8px;
-  background-color: #501A32; /* Deep purple background */
+  background-color: #EDE8F5; /* Light Lavender background */
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
@@ -58,7 +168,7 @@ body {
   margin-top: 30px;
   font-size: 22px;
   font-weight: bold;
-  border-bottom: 2px solid #C72C41; /* Accent color */
+  border-bottom: 2px solid #8697C4; /* Accent color */
   padding-bottom: 5px;
 }
 
@@ -70,7 +180,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  color: #EEE; /* Light color for table */
+  color: #333; /* Darker text for better readability */
 }
 
 .customTable th, .customTable td {
@@ -80,7 +190,7 @@ body {
 }
 
 .customTable th {
-  background-color: #801336; /* Rich purple for table header */
+  background-color: #7091E6; /* Medium Blue for table header */
   color: white;
 }
 
@@ -89,14 +199,14 @@ body {
 }
 
 .viewDetailsButton {
-  color: #EE4540;
+  color: #3D52A0; /* Dark Blue */
   font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .viewDetailsButton:hover {
-  color: #C72C41;
+  color: black;
   text-decoration: underline;
 }
 
@@ -108,13 +218,13 @@ body {
 }
 
 .editButton {
-  background-color: #C72C41; /* Darker red */
+  background-color: #0c2d80; /* Medium Blue */
   color: white;
 }
 
 .deleteButton {
-  background-color: #EE4540; /* Bold red */
-  color: white;
+  background-color: #ADBBDA; /* Light Blue */
+  color: black;
 }
 
 .skillsList {
@@ -129,12 +239,12 @@ body {
 }
 
 .skillItem {
-  background: #501A32; /* Darker purple */
+  background: #EDE8F5; /* Light Lavender */
   padding: 15px;
   margin: 5px 0;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-  color: white;
+  color: black;
   font-weight: bold;
   text-align: center;
   transform: translateY(20px);
@@ -144,7 +254,7 @@ body {
 }
 
 .skillItem:hover {
-  background-color: #EE4540; /* Bright red highlight */
+  background-color: #3D52A0; /* Dark Blue */
 }
 
 .skillItem:nth-child(even) {
@@ -175,18 +285,18 @@ body {
 
 .loadingText {
   font-size: 16px;
-  color: white;
+  color: black;
   margin-top: 10px;
 }
 
 .profileCard {
-  background: #2D142C; /* Rich background */
+  background: #EDE8F5; /* Light Lavender background for differentiation */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
   max-width: 500px;
   margin: 20px auto;
-  color: white;
+  color: black;
   opacity: 0;
   animation: fadeIn 1s forwards;
   transform: scale(0.95);
@@ -218,7 +328,7 @@ body {
 
 .noProfile {
   text-align: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.7);
   font-size: 14px;
   margin-top: 20px;
 }

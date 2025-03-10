@@ -26,7 +26,7 @@ const SignUpForm = () => {
 
       if (res.ok) {
         // After successful signup, redirect to login page
-        router.push('/login_page');
+        router.push('/landing_page');
       } else {
         setError(data.error || 'Sign up failed');
       }
@@ -73,7 +73,7 @@ const SignUpForm = () => {
 
           <div className="mt-3 text-center">
             <span>Already have an account? </span>
-            <a href="/login_page" className="text-primary">Sign In</a>
+            <a href="/landing_page" className="text-primary">Sign In</a>
           </div>
         </div>
       </div>
