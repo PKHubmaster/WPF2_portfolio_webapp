@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Home = () => {
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [systemUserId, setSystemUserId] = useState<string | null>(null);
   const [userType, setUserType] = useState<number | null>(null);
@@ -78,6 +78,11 @@ const Home = () => {
     }
   };
 
+  const handleReviewPendingApprovals = () => {
+    // Logic for reviewing pending approvals
+    router.push('/approvals');
+  };
+
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -112,12 +117,27 @@ const Home = () => {
                     <td>{profile.employeeFirstName}</td>
                     <td>{profile.employeeLastName}</td>
                     <td>
-                      <button
-                        className="btn btn-info btn-sm"
-                        onClick={() => router.push(`/candidate-details/${profile._id}`)}
-                      >
-                        View Candidate Details
-                      </button>
+                      {userType === 0 && (
+                        <button
+                          className="btn btn-info btn-sm"
+                          onClick={() => router.push(`/candidate-details/${profile._id}`)}
+                        >
+                          View Candidate Details
+                        </button>
+                      )}
+                      {userType === 1 && profile.accessStatus === 'Pending' && (
+                        <button className="btn btn-secondary btn-sm" disabled>
+                          Pending Admin Approval
+                        </button>
+                      )}
+                      {userType === 1 && profile.accessStatus !== 'Pending' && (
+                        <button
+                          className="btn btn-info btn-sm"
+                          onClick={() => router.push(`/candidate-details/${profile._id}`)}
+                        >
+                          View Candidate Details
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -129,7 +149,7 @@ const Home = () => {
             </tbody>
           </table>
 
-          {/* Conditionally render the button based on userType */}
+          {/* Conditionally render buttons based on userType */}
           <div className="text-center mt-4">
             {userType === 0 && (
               <button className="btn btn-success" onClick={handleButtonClick}>
@@ -139,6 +159,11 @@ const Home = () => {
             {userType === 1 && (
               <button className="btn btn-primary" onClick={handleButtonClick}>
                 Request to View Candidate Profile
+              </button>
+            )}
+            {userType === 0 && (
+              <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
+                Review Pending Approvals
               </button>
             )}
           </div>
