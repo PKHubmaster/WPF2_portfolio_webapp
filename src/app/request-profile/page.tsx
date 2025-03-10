@@ -69,7 +69,7 @@ const RequestProfile = () => {
       systemUser: formData.employerId, 
       profile: formData.selectedCandidate, 
       requestDate: new Date().toISOString(),
-      accessStatus: "Approved",
+      accessStatus: "Pending",
     };
 
     await fetch('/api/requestprofileaccess', {

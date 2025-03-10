@@ -101,7 +101,14 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <h2 className="mb-4">Candidate Profiles</h2>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2>Candidate Profiles</h2>
+            {userType === 0 && (
+              <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
+                Review Pending Approvals
+              </button>
+            )}
+          </div>
           <table className="table table-bordered table-hover shadow-sm">
             <thead className="table-dark">
               <tr>
@@ -125,17 +132,26 @@ const Home = () => {
                           View Candidate Details
                         </button>
                       )}
+
                       {userType === 1 && profile.accessStatus === 'Pending' && (
                         <button className="btn btn-secondary btn-sm" disabled>
                           Pending Admin Approval
                         </button>
                       )}
-                      {userType === 1 && profile.accessStatus !== 'Pending' && (
+
+                      {userType === 1 && profile.accessStatus !== 'Pending' && profile.accessStatus !== 'Rejected' && (
                         <button
                           className="btn btn-info btn-sm"
                           onClick={() => router.push(`/candidate-details/${profile._id}`)}
                         >
                           View Candidate Details
+                        </button>
+                      )}
+
+                      {/* Show a red "Rejected" button if accessStatus is 'Rejected' */}
+                      {profile.accessStatus === 'Rejected' && (
+                        <button className="btn btn-danger btn-sm" disabled>
+                          Rejected
                         </button>
                       )}
                     </td>
@@ -159,11 +175,6 @@ const Home = () => {
             {userType === 1 && (
               <button className="btn btn-primary" onClick={handleButtonClick}>
                 Request to View Candidate Profile
-              </button>
-            )}
-            {userType === 0 && (
-              <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
-                Review Pending Approvals
               </button>
             )}
           </div>

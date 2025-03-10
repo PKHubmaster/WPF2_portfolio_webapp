@@ -6,19 +6,20 @@ const client = new MongoClient(process.env.MONGODB_URI || '');
 
 export async function PUT(req: Request, context: { params: { id: string } }) {
   try {
+    // Fix: Await context.params before accessing its properties
+    const { id: profileId } = await context.params; // Fixed: Ensure `params` are awaited before usage
+
     await connectToDatabase();
-    const { id: profileId } = context.params;
 
     const { accessStatus } = await req.json();
 
-    // Ensure the accessStatus is either 'Approved' or 'Rejected'
     if (!['Approved', 'Rejected'].includes(accessStatus)) {
       return NextResponse.json({ error: 'Invalid accessStatus' }, { status: 400 });
     }
 
     const result = await client.db().collection('userprofileaccess').updateOne(
-      { profile: new ObjectId(profileId) },
-      { $set: { 'accessDetails.accessStatus': accessStatus } }
+      { _id: new ObjectId(profileId) },
+      { $set: { accessStatus: accessStatus } }
     );
 
     if (result.matchedCount === 0) {

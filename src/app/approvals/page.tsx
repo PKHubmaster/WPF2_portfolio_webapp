@@ -15,7 +15,7 @@ const Approvals = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setPendingProfiles(data);
+          setPendingProfiles(data); // Ensure data is in the correct format
         } else {
           setPendingProfiles([]);
         }
@@ -65,6 +65,9 @@ const Approvals = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Pending Profile Approvals</h1>
+        <button className="btn btn-primary" onClick={() => router.push('/home')}>
+          Back to Dashboard
+        </button>
       </div>
 
       {loading ? (
@@ -79,8 +82,10 @@ const Approvals = () => {
           <table className="table table-bordered table-hover shadow-sm">
             <thead className="table-dark">
               <tr>
+                <th>System User</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Access Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -88,8 +93,10 @@ const Approvals = () => {
               {pendingProfiles.length > 0 ? (
                 pendingProfiles.map((profile: any) => (
                   <tr key={profile._id}>
-                    <td>{profile.employeeFirstName}</td>
-                    <td>{profile.employeeLastName}</td>
+                    <td>{profile.systemUserDetails?.systemUserName}</td>
+                    <td>{profile.profileDetails?.employeeFirstName}</td>
+                    <td>{profile.profileDetails?.employeeLastName}</td>
+                    <td>{profile.accessStatus}</td>
                     <td>
                       <button
                         className="btn btn-success btn-sm"
@@ -108,7 +115,7 @@ const Approvals = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={3} className="text-center">No pending approvals</td>
+                  <td colSpan={5} className="text-center">No pending approvals</td>
                 </tr>
               )}
             </tbody>
