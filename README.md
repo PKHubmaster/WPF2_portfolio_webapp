@@ -23,15 +23,15 @@ What we acheived in Phase 3:
 =============================
 
 A) We fully documented these features and operations:
-6.1. Explanation of Web Application Architecture..........................................................................................6
-6.2. Explanation of Mongo Database Design...................................................................................................7
-6.3. Explanation of API Routes.........................................................................................................................8
-6.4. Description of Workflow #1: Admin Invites a New Employer for Trial......................................................9
-6.5. Description of Workflow #2: Existing Employer Requests to View Candidate Profile............................11
-6.6. Operation: Admin Adds a New Candidate Profile...................................................................................19
-6.7. Operation: Admin Adds/Edits/Deletes Projects and/or Skills to a Profile..............................................22
-6.8. Operation: Employer Signs-Up (Adds a new SystemUser record with hashed password)......................24
-6.9. Security Feature: JWT for Authentication and Authorization.................................................................26
+6.1. Explanation of Web Application Architecture
+6.2. Explanation of Mongo Database Design
+6.3. Explanation of API Routes
+6.4. Description of Workflow #1: Admin Invites a New Employer for Trial
+6.5. Description of Workflow #2: Existing Employer Requests to View Candidate Profile
+6.6. Operation: Admin Adds a New Candidate Profile
+6.7. Operation: Admin Adds/Edits/Deletes Projects and/or Skills to a Profile
+6.8. Operation: Employer Signs-Up (Adds a new SystemUser record with hashed password)
+6.9. Security Feature: JWT for Authentication and Authorization
 
 B) Each team member created (at least) 1 main 2nd feature:
 ● Parm:
