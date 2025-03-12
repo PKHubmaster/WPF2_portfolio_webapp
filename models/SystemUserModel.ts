@@ -1,8 +1,9 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, ObjectId } from 'mongoose';  // Import ObjectId from mongoose
 import bcrypt from 'bcryptjs';
 
 // Define a TypeScript interface for the document
-interface ISystemUser extends Document {
+export interface ISystemUser extends Document {
+  _id: ObjectId;  // Ensure _id is of type ObjectId
   systemUserName: string;
   employerName: string;
   employerEmail: string;

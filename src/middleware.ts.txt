@@ -1,0 +1,25 @@
+import { NextResponse } from 'next/server';
+import { verifyToken } from '../lib/jwt'; // Adjust the path if needed
+
+export async function middleware(req: Request) {
+  try {
+    const token = req.headers.get('Authorization')?.split(' ')[1];
+
+    if (!token) {
+      return NextResponse.next(); // Let the request through if no token is present
+    }
+
+    const decoded = await verifyToken(token);
+
+    (req as any).user = decoded;
+
+    return NextResponse.next(); // Allow the request to continue
+
+  } catch (error) {
+    return NextResponse.next(); // Allow the request to continue in case of error
+  }
+}
+
+export const config = {
+  matcher: ['/api/*', '/*'], // Simplified route matching for testing
+};
