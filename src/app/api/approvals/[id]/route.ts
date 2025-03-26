@@ -4,9 +4,13 @@ import connectToDatabase from '../../../../../lib/mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI || '');
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+interface Params {
+  id: string;
+}
+
+export async function PUT(req: Request, { params }: { params: Params }) {
   try {
-    const { id: profileId } = await params; // No await needed here for params, but reverted
+    const { id: profileId } = params; // No await needed here for params
 
     await connectToDatabase();
 
