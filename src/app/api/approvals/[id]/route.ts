@@ -6,7 +6,7 @@ const client = new MongoClient(process.env.MONGODB_URI || '');
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { id: profileId } = params; // No await needed here for params
+    const { id: profileId } = await params; // No await needed here for params, but reverted
 
     await connectToDatabase();
 
