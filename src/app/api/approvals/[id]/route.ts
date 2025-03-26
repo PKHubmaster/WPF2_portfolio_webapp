@@ -8,9 +8,9 @@ interface Params {
   id: string;
 }
 
-export async function PUT(req: Request, { params }: { params: Params }) {
+export async function PUT(req: Request, context: { params: Params }) {
   try {
-    const { id: profileId } = params; // No await needed here for params
+    const { id: profileId } = context.params; // Destructure directly from context.params
 
     await connectToDatabase();
 
