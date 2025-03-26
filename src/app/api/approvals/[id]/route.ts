@@ -4,10 +4,9 @@ import connectToDatabase from '../../../../../lib/mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI || '');
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
-    // Fix: Await context.params before accessing its properties
-    const { id: profileId } = await context.params; // Fixed: Ensure `params` are awaited before usage
+    const { id: profileId } = params; // No await needed here for params
 
     await connectToDatabase();
 
