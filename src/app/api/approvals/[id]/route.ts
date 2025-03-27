@@ -8,9 +8,15 @@ interface Params {
   id: string;
 }
 
-export async function PUT(req: Request, context: { params: Params }) {
+export async function PUT(req: Request) {
   try {
-    const { id: profileId } = context.params; // Destructure directly from context.params
+    // Extract the id from the URL path directly using request.url
+    const url = new URL(req.url);
+    const profileId = url.pathname.split('/').pop(); // Assuming the id is the last part of the URL path
+
+    if (!profileId) {
+      return NextResponse.json({ error: 'Profile ID is required' }, { status: 400 });
+    }
 
     await connectToDatabase();
 
