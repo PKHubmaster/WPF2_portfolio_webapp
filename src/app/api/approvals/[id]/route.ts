@@ -4,15 +4,9 @@ import connectToDatabase from '../../../../../lib/mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI || '');
 
-interface Params {
-  id: string;
-}
-
-export async function PUT(req: Request) {
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
-    // Extract the id from the URL path directly using request.url
-    const url = new URL(req.url);
-    const profileId = url.pathname.split('/').pop(); // Assuming the id is the last part of the URL path
+    const profileId = params.id; // Use params directly
 
     if (!profileId) {
       return NextResponse.json({ error: 'Profile ID is required' }, { status: 400 });
