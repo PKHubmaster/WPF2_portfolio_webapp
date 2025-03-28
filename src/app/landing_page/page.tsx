@@ -1,13 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRouter } from 'next/navigation';
+import './home.css'; // Import the custom CSS file
 
 const LoginForm = () => {
   const [systemUserName, setSystemUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showSignUp, setShowSignUp] = useState(false);  // State to control modal visibility
+  const [showSignUp, setShowSignUp] = useState(false);
   const [newUser, setNewUser] = useState({
     systemUserName: '',
     employerName: '',
@@ -16,7 +17,6 @@ const LoginForm = () => {
   });
   const router = useRouter();
 
-  // Handle Login
   const handleLogin = async () => {
     setError('');
     try {
@@ -27,7 +27,6 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
-
       if (res.ok) {
         localStorage.setItem('systemUserId', data.systemUserId);
         router.push('/home');
@@ -39,13 +38,11 @@ const LoginForm = () => {
     }
   };
 
-  // Handle Sign-Up form data change
   const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Sign-Up submission
   const handleSignUp = async () => {
     setError('');
     try {
@@ -57,15 +54,14 @@ const LoginForm = () => {
           employerName: newUser.employerName,
           employerEmail: newUser.employerEmail,
           password: newUser.password,
-          usertype: 1, // Assigned as employer (1)
+          usertype: 1,
         }),
       });
 
       const data = await res.json();
-
       if (res.ok) {
         alert('New user signed up successfully, you may login with your credentials');
-        setShowSignUp(false);  // Close the modal
+        setShowSignUp(false);
       } else {
         setError(data.error || 'Sign up failed');
       }
@@ -75,42 +71,83 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center position-relative bg-dark">
-      <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+    <div
+      className="vh-100 d-flex justify-content-center align-items-center"
+      style={{
+        backgroundImage: 'url(/landing2.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div
+        className="text-center text-light"
+        style={{
+          maxWidth: '320px', // 20% shorter than 400px
+          position: 'absolute',
+          top: '50%', // 50% up
+          transform: 'translateY(-50%)', // Centers the content vertically
+        }}
+      >
+        <h2 className="mb-4 font-weight-bold" style={{ fontSize: '1.5rem' }}>
+          Sign-in to BiteJob
+        </h2>
+        {error && <p className="text-danger">{error}</p>}
 
-      <div className="row g-0 shadow rounded-4 overflow-hidden position-relative" style={{ width: '400px', height: '450px', zIndex: 10, backgroundColor: 'white' }}>
-        <div className="col-md-12 p-4 d-flex flex-column justify-content-center text-dark">
-          <h2 className="text-center mb-3">Sign In</h2>
-          {error && <p className="text-danger text-center">{error}</p>}
-
-          <div className="mb-2">
-            <label className="form-label">Username</label>
-            <input type="text" className="form-control" value={systemUserName} onChange={(e) => setSystemUserName(e.target.value)} />
-          </div>
-
-          <div className="mb-2">
-            <label className="form-label">Password</label>
-            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-
-          <div className="text-center">
-            <button type="button" className="btn btn-primary w-50 mt-2" onClick={handleLogin}>
-              Sign In
-            </button>
-            <button type="button" className="btn btn-secondary w-50 mt-2" onClick={() => setShowSignUp(true)}>
-              Sign Up
-            </button>
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={systemUserName}
+            onChange={(e) => setSystemUserName(e.target.value)}
+          />
         </div>
+
+        <div className="mb-3">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <button type="button" className="btn btn-primary w-100" onClick={handleLogin}>
+          Sign In
+        </button>
+
+        <p className="text-center mt-3" style={{ color: 'white' }}>
+          Not an existing user?{' '}
+          <span
+            className="text-primary"
+            role="button"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setShowSignUp(true)}
+          >
+            Register
+          </span>
+        </p>
+
+        <p
+          className="text-center mt-4"
+          style={{ fontSize: '0.8rem', color: 'black' }}
+        >
+          &copy; Code Crafter Web Services - HR Talent Acquisition Systems
+        </p>
       </div>
 
-      {/* Modal for Sign Up */}
       {showSignUp && (
-        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} tabIndex={-1}>
+        <div
+          className="modal show d-block"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          tabIndex={-1}
+        >
           <div className="modal-dialog">
-            <div className="modal-content">
+            <div className="modal-content text-dark">
               <div className="modal-header">
-                <h5 className="modal-title">Sign Up</h5>
+                <h5 className="modal-title">Sign Up for BiteJob</h5>
                 <button type="button" className="btn-close" onClick={() => setShowSignUp(false)} />
               </div>
               <div className="modal-body">
@@ -124,7 +161,6 @@ const LoginForm = () => {
                     onChange={handleSignUpChange}
                   />
                 </div>
-
                 <div className="mb-2">
                   <label className="form-label">Employer Name</label>
                   <input
@@ -135,7 +171,6 @@ const LoginForm = () => {
                     onChange={handleSignUpChange}
                   />
                 </div>
-
                 <div className="mb-2">
                   <label className="form-label">Employer Email</label>
                   <input
@@ -146,7 +181,6 @@ const LoginForm = () => {
                     onChange={handleSignUpChange}
                   />
                 </div>
-
                 <div className="mb-2">
                   <label className="form-label">Password</label>
                   <input
