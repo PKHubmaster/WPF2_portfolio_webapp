@@ -138,7 +138,7 @@ const LoginForm = () => {
         </p>
         <p
           className="text-center mt-1"
-          style={{ fontSize: '0.9rem', color: 'cyan', fontStyle: 'bold' }}
+          style={{ fontSize: '0.7rem', color: 'cyan', fontStyle: 'bold' }}
         >
           let BiteJob take a bite out of the job market for you
         </p>
