@@ -2,15 +2,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './home.css'; // Import your home.css styles
 
 const Home = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [systemUserId, setSystemUserId] = useState<string | null>(null);
   const [userType, setUserType] = useState<number | null>(null);
-  const [systemUserName, setSystemUserName] = useState<string | null>(null); // New state for systemUserName
-  const [sortField, setSortField] = useState<string>('employeeFirstName'); // Default sort field
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Default sort order (ascending)
+  const [systemUserName, setSystemUserName] = useState<string | null>(null);
+  const [sortField, setSortField] = useState<string>('employeeFirstName');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const router = useRouter();
 
   useEffect(() => {
@@ -30,11 +31,9 @@ const Home = () => {
         const response = await fetch(`/api/user/${systemUserId}`);
         const data = await response.json();
 
-        console.log('User API response:', data);
-
         if (response.ok) {
           setUserType(data.usertype);
-          setSystemUserName(data.systemUserName); // Set the systemUserName here
+          setSystemUserName(data.systemUserName);
         } else {
           console.error('Error fetching user type:', data.error);
         }
@@ -83,17 +82,14 @@ const Home = () => {
   };
 
   const handleReviewPendingApprovals = () => {
-    // Logic for reviewing pending approvals
     router.push('/approvals');
   };
 
   const handleAddNewProfile = () => {
-    // Navigate to the new profile page
     router.push('/new-profile');
   };
 
   const handleSort = (field: string) => {
-    // Toggle sort order if the same field is clicked
     const newSortOrder = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortField(field);
     setSortOrder(newSortOrder);
@@ -102,7 +98,7 @@ const Home = () => {
   const sortedProfiles = [...profiles].sort((a, b) => {
     const fieldA = a[sortField].toLowerCase();
     const fieldB = b[sortField].toLowerCase();
-    
+
     if (fieldA < fieldB) return sortOrder === 'asc' ? -1 : 1;
     if (fieldA > fieldB) return sortOrder === 'asc' ? 1 : -1;
     return 0;
@@ -111,7 +107,9 @@ const Home = () => {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Welcome to the dashboard, {systemUserName}</h1> {/* Display systemUserName here */}
+        <h2 className="font-bold">
+          Welcome to the candidate profile dashboard, {systemUserName}
+        </h2>
         <button className="btn btn-danger" onClick={handleLogout}>
           Logout
         </button>
@@ -127,23 +125,32 @@ const Home = () => {
       ) : (
         <div>
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2>Candidate Profiles</h2>
-            {userType === 0 && (
-              <div className="d-flex">
-                {/* Add New Profile button */}
-                <button className="btn btn-success mt-2 me-2" onClick={handleAddNewProfile}>
-                  Add New Profile
-                </button>
+            <div className="d-flex">
+              {userType === 0 && (
+                <>
+                  <button className="btn btn-success mt-2 me-2" onClick={handleAddNewProfile}>
+                    Add New Profile
+                  </button>
 
-                {/* Review Pending Approvals button */}
-                <button className="btn btn-warning mt-2" onClick={handleReviewPendingApprovals}>
-                  Review Pending Approvals
+                  <button className="btn btn-warning mt-2 me-2" onClick={handleReviewPendingApprovals}>
+                    Review Pending Approvals
+                  </button>
+
+                  <button className="btn btn-success mt-2 me-2" onClick={handleButtonClick}>
+                    Send Invite to Employer
+                  </button>
+                </>
+              )}
+
+              {userType === 1 && (
+                <button className="btn btn-primary mt-2" onClick={handleButtonClick}>
+                  Request to View Candidate Profile
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          <table className="table table-bordered table-hover shadow-sm">
+          <table id="candidateTable" className="table table-bordered table-hover shadow-sm">
             <thead className="table-dark">
               <tr>
                 <th onClick={() => handleSort('employeeFirstName')}>
@@ -160,7 +167,7 @@ const Home = () => {
             <tbody>
               {sortedProfiles.length > 0 ? (
                 sortedProfiles.map((profile: any) => (
-                  <tr key={profile._id}>
+                  <tr key={profile._id} className="table-row-height">
                     <td>{profile.employeeFirstName}</td>
                     <td>{profile.employeeLastName}</td>
                     <td>
@@ -188,7 +195,6 @@ const Home = () => {
                         </button>
                       )}
 
-                      {/* Show a red "Rejected" button if accessStatus is 'Rejected' */}
                       {profile.accessStatus === 'Rejected' && (
                         <button className="btn btn-danger btn-sm" disabled>
                           Rejected
@@ -204,20 +210,6 @@ const Home = () => {
               )}
             </tbody>
           </table>
-
-          {/* Conditionally render buttons based on userType */}
-          <div className="text-center mt-4">
-            {userType === 0 && (
-              <button className="btn btn-success" onClick={handleButtonClick}>
-                Send Invite to Employer
-              </button>
-            )}
-            {userType === 1 && (
-              <button className="btn btn-primary" onClick={handleButtonClick}>
-                Request to View Candidate Profile
-              </button>
-            )}
-          </div>
         </div>
       )}
     </div>

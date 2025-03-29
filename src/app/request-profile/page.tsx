@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -20,8 +20,8 @@ interface Candidate {
 
 const RequestProfile = () => {
   const [formData, setFormData] = useState({
-    employerId: "",
-    employerEmail: "",
+    employerId: "",   // Initially will be auto-filled
+    employerEmail: "", // Initially will be auto-filled
     selectedCandidate: "",
   });
 
@@ -38,26 +38,35 @@ const RequestProfile = () => {
       const data = await response.json();
 
       setCandidates(data.candidates);
-      setEmployers(data.employers); // Remove filtering condition
+      setEmployers(data.employers);
     };
 
     fetchData();
   }, []);
 
+  // Fetch systemUserId (Employer ID) from local storage or context (e.g., from home page)
+  useEffect(() => {
+    const systemUserId = localStorage.getItem('systemUserId'); // Get the systemUserId (Employer ID)
+    
+    if (systemUserId) {
+      const selectedEmployer = employers.find(emp => emp._id === systemUserId);
+
+      if (selectedEmployer) {
+        setFormData({
+          employerId: systemUserId,
+          employerEmail: selectedEmployer.employerEmail,
+          selectedCandidate: "",
+        });
+      }
+    }
+  }, [employers]); // Trigger when employers are loaded
+
   // Handle form data change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    // Auto-populate email when employer is selected
-    if (name === "employerId") {
-      const selectedEmployer = employers.find(emp => emp._id === value);
-      setFormData({
-        ...formData,
-        employerId: value,
-        employerEmail: selectedEmployer ? selectedEmployer.employerEmail : "",
-      });
-    } else {
-      setFormData({ ...formData, [name]: value });
+    if (name === "selectedCandidate") {
+      setFormData({ ...formData, selectedCandidate: value });
     }
   };
 
@@ -111,19 +120,6 @@ const RequestProfile = () => {
               {candidates.map((candidate) => (
                 <option key={candidate._id} value={candidate._id}>
                   {candidate.employeeFirstName} {candidate.employeeLastName}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Employer Selection */}
-          <div className="mb-3">
-            <label className="form-label">Your Name (Employer):</label>
-            <select className="form-select" name="employerId" value={formData.employerId} onChange={handleChange}>
-              <option value="" disabled>Select an employer</option>
-              {employers.map((employer) => (
-                <option key={employer._id} value={employer._id}>
-                  {employer.employerName}
                 </option>
               ))}
             </select>
