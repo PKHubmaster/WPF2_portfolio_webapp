@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 const Home = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [systemUserId, setSystemUserId] = useState<string | null>(null);
   const [userType, setUserType] = useState<number | null>(null);
+  const [systemUserName, setSystemUserName] = useState<string | null>(null); // New state for systemUserName
+  const [sortField, setSortField] = useState<string>('employeeFirstName'); // Default sort field
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Default sort order (ascending)
   const router = useRouter();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     if (!systemUserId) return;
 
-    const fetchUserType = async () => {
+    const fetchUserDetails = async () => {
       try {
         const response = await fetch(`/api/user/${systemUserId}`);
         const data = await response.json();
@@ -32,15 +34,16 @@ const Home = () => {
 
         if (response.ok) {
           setUserType(data.usertype);
+          setSystemUserName(data.systemUserName); // Set the systemUserName here
         } else {
           console.error('Error fetching user type:', data.error);
         }
       } catch (error) {
-        console.error('Failed to fetch user type:', error);
+        console.error('Failed to fetch user details:', error);
       }
     };
 
-    fetchUserType();
+    fetchUserDetails();
   }, [systemUserId]);
 
   useEffect(() => {
@@ -89,10 +92,26 @@ const Home = () => {
     router.push('/new-profile');
   };
 
+  const handleSort = (field: string) => {
+    // Toggle sort order if the same field is clicked
+    const newSortOrder = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortField(field);
+    setSortOrder(newSortOrder);
+  };
+
+  const sortedProfiles = [...profiles].sort((a, b) => {
+    const fieldA = a[sortField].toLowerCase();
+    const fieldB = b[sortField].toLowerCase();
+    
+    if (fieldA < fieldB) return sortOrder === 'asc' ? -1 : 1;
+    if (fieldA > fieldB) return sortOrder === 'asc' ? 1 : -1;
+    return 0;
+  });
+
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Welcome to the Dashboard</h1>
+        <h1>Welcome to the dashboard, {systemUserName}</h1> {/* Display systemUserName here */}
         <button className="btn btn-danger" onClick={handleLogout}>
           Logout
         </button>
@@ -123,17 +142,24 @@ const Home = () => {
               </div>
             )}
           </div>
+
           <table className="table table-bordered table-hover shadow-sm">
             <thead className="table-dark">
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th onClick={() => handleSort('employeeFirstName')}>
+                  First Name
+                  {sortField === 'employeeFirstName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
+                </th>
+                <th onClick={() => handleSort('employeeLastName')}>
+                  Last Name
+                  {sortField === 'employeeLastName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {profiles.length > 0 ? (
-                profiles.map((profile: any) => (
+              {sortedProfiles.length > 0 ? (
+                sortedProfiles.map((profile: any) => (
                   <tr key={profile._id}>
                     <td>{profile.employeeFirstName}</td>
                     <td>{profile.employeeLastName}</td>

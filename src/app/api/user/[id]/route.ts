@@ -7,7 +7,7 @@ const client = new MongoClient(process.env.MONGODB_URI || '');
 export async function GET(req: Request, context: { params: { id: string } }) {
   try {
     await connectToDatabase();
-    
+
     const params = await Promise.resolve(context.params);
     const systemUserId = params.id;
 
@@ -17,13 +17,13 @@ export async function GET(req: Request, context: { params: { id: string } }) {
 
     const user = await client.db()
       .collection('systemusers')
-      .findOne({ _id: new ObjectId(systemUserId) }, { projection: { usertype: 1 } });
+      .findOne({ _id: new ObjectId(systemUserId) }, { projection: { usertype: 1, systemUserName: 1 } });
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ usertype: user.usertype });
+    return NextResponse.json({ usertype: user.usertype, systemUserName: user.systemUserName });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

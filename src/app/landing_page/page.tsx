@@ -132,9 +132,15 @@ const LoginForm = () => {
 
         <p
           className="text-center mt-4"
-          style={{ fontSize: '0.8rem', color: 'black' }}
+          style={{ fontSize: '0.6rem', color: 'black' }}
         >
           &copy; Code Crafter Web Services - HR Talent Acquisition Systems
+        </p>
+        <p
+          className="text-center mt-1"
+          style={{ fontSize: '0.9rem', color: 'cyan', fontStyle: 'bold' }}
+        >
+          let BiteJob take a bite out of the job market for you
         </p>
       </div>
 
