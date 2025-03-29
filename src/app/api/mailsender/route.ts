@@ -31,7 +31,7 @@ We're excited to invite you to experience our cutting-edge Talent Acquisition Sy
 
 Join industry leaders who are transforming their talent acquisition strategy!
 
-👉 Click here to sign up and start for free: http://localhost:3000/
+👉 Click here to sign up and start for free: https://wpf-2-test02-pkvercelusers-projects.vercel.app/
 
 We look forward to helping you build your dream team!
 
