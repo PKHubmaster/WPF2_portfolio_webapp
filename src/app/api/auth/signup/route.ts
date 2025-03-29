@@ -3,10 +3,23 @@ import { NextRequest } from 'next/server';
 import mongoose from 'mongoose';
 import SysUserModel from '../../../../../models/SystemUserModel';
 
+// Load environment variables (for local testing only)
+import 'dotenv/config';
+
 // Ensure Mongoose is connected
 const connectToDatabase = async () => {
   if (mongoose.connection.readyState >= 1) return;  // Connection already established
-  await mongoose.connect('mongodb://localhost/portfolio');  // Replace with your MongoDB URI
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI as string, {
+      connectTimeoutMS: 3000, // Timeout for connection attempt
+      serverSelectionTimeoutMS: 3000, // Timeout for server selection
+    });
+    console.log('Connected to MongoDB Atlas');
+  } catch (err) {
+    console.error('Database connection error:', err);
+    throw new Error('Database connection failed');
+  }
 };
 
 // Handle signup logic
@@ -23,7 +36,9 @@ export async function POST(request: NextRequest) {
 
   try {
     // Check if the username or email already exists
-    const existingUser = await SysUserModel.findOne({ $or: [{ systemUserName }, { employerEmail }] });
+    const existingUser = await SysUserModel.findOne({
+      $or: [{ systemUserName }, { employerEmail }],
+    });
 
     if (existingUser) {
       return NextResponse.json({ error: 'Username or Email already exists.' }, { status: 409 });

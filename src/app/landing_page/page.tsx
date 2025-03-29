@@ -3,6 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
 import './home.css'; // Import the custom CSS file
+import { motion, AnimatePresence } from 'framer-motion';
 
 const LoginForm = () => {
   const [systemUserName, setSystemUserName] = useState('');
@@ -15,6 +16,7 @@ const LoginForm = () => {
     employerEmail: '',
     password: '',
   });
+  const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -60,7 +62,8 @@ const LoginForm = () => {
 
       const data = await res.json();
       if (res.ok) {
-        alert('New user signed up successfully, you may login with your credentials');
+        setModalVisible(true);
+        setTimeout(() => setModalVisible(false), 2000); // Fade out after 2 seconds
         setShowSignUp(false);
       } else {
         setError(data.error || 'Sign up failed');
@@ -83,17 +86,17 @@ const LoginForm = () => {
       <div
         className="text-center text-light"
         style={{
-          maxWidth: '320px', // 20% shorter than 400px
+          maxWidth: '320px',
           position: 'absolute',
-          top: '50%', // 50% up
-          transform: 'translateY(-50%)', // Centers the content vertically
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       >
         <h2 className="mb-4 font-weight-bold" style={{ fontSize: '1.5rem' }}>
           Sign-in to BiteJob
         </h2>
         {error && <p className="text-danger">{error}</p>}
-
+        
         <div className="mb-3">
           <label className="form-label">Username</label>
           <input
@@ -129,21 +132,10 @@ const LoginForm = () => {
             Register
           </span>
         </p>
-
-        <p
-          className="text-center mt-4"
-          style={{ fontSize: '0.8rem', color: 'black' }}
-        >
-          &copy; Code Crafter Web Services - HR Talent Acquisition Systems
-        </p>
       </div>
 
       {showSignUp && (
-        <div
-          className="modal show d-block"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-          tabIndex={-1}
-        >
+        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
           <div className="modal-dialog">
             <div className="modal-content text-dark">
               <div className="modal-header">
@@ -151,59 +143,39 @@ const LoginForm = () => {
                 <button type="button" className="btn-close" onClick={() => setShowSignUp(false)} />
               </div>
               <div className="modal-body">
-                <div className="mb-2">
-                  <label className="form-label">Username</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="systemUserName"
-                    value={newUser.systemUserName}
-                    onChange={handleSignUpChange}
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="form-label">Employer Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="employerName"
-                    value={newUser.employerName}
-                    onChange={handleSignUpChange}
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="form-label">Employer Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="employerEmail"
-                    value={newUser.employerEmail}
-                    onChange={handleSignUpChange}
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={newUser.password}
-                    onChange={handleSignUpChange}
-                  />
-                </div>
+                <input type="text" className="form-control mb-2" name="systemUserName" placeholder="Username" value={newUser.systemUserName} onChange={handleSignUpChange} />
+                <input type="text" className="form-control mb-2" name="employerName" placeholder="Employer Name" value={newUser.employerName} onChange={handleSignUpChange} />
+                <input type="email" className="form-control mb-2" name="employerEmail" placeholder="Employer Email" value={newUser.employerEmail} onChange={handleSignUpChange} />
+                <input type="password" className="form-control mb-2" name="password" placeholder="Password" value={newUser.password} onChange={handleSignUpChange} />
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowSignUp(false)}>
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary" onClick={handleSignUp}>
-                  Sign Up
-                </button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowSignUp(false)}>Close</button>
+                <button type="button" className="btn btn-primary" onClick={handleSignUp}>Sign Up</button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      <AnimatePresence>
+        {modalVisible && (
+          <motion.div 
+            className="modal show d-block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          >
+            <div className="modal-dialog">
+              <div className="modal-content text-dark">
+                <div className="modal-body text-center">
+                  <p className="text-success">New user signed up successfully! You may log in.</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
