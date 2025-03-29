@@ -8,7 +8,6 @@ const LoginForm = () => {
   const [systemUserName, setSystemUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [showSignUp, setShowSignUp] = useState(false);
   const [newUser, setNewUser] = useState({
     systemUserName: '',
@@ -16,12 +15,10 @@ const LoginForm = () => {
     employerEmail: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false); // State to control spinner visibility
   const router = useRouter();
 
   const handleLogin = async () => {
     setError('');
-    setLoading(true); // Show spinner
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -30,7 +27,6 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
-      setLoading(false); // Hide spinner
       if (res.ok) {
         localStorage.setItem('systemUserId', data.systemUserId);
         router.push('/home');
@@ -38,7 +34,6 @@ const LoginForm = () => {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
-      setLoading(false); // Hide spinner
       setError('Something went wrong. Try again.');
     }
   };
@@ -50,8 +45,6 @@ const LoginForm = () => {
 
   const handleSignUp = async () => {
     setError('');
-    setSuccessMessage('');
-    setLoading(true); // Show spinner
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -66,19 +59,13 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
-      setLoading(false); // Hide spinner
       if (res.ok) {
-        setSuccessMessage('New user signed up successfully! You may log in.');
-        setTimeout(() => {
-          setSuccessMessage('');
-          setShowSignUp(false);
-          router.push('/home'); // Redirect to home after success
-        }, 2500); // Success message stays for 2.5 seconds before redirecting
+        alert('New user signed up successfully, you may login with your credentials');
+        setShowSignUp(false);
       } else {
         setError(data.error || 'Sign up failed');
       }
     } catch (err) {
-      setLoading(false); // Hide spinner
       setError('Something went wrong. Try again.');
     }
   };
@@ -96,21 +83,16 @@ const LoginForm = () => {
       <div
         className="text-center text-light"
         style={{
-          maxWidth: '320px',
+          maxWidth: '320px', // 20% shorter than 400px
           position: 'absolute',
-          top: '50%',
-          transform: 'translateY(-50%)',
+          top: '50%', // 50% up
+          transform: 'translateY(-50%)', // Centers the content vertically
         }}
       >
         <h2 className="mb-4 font-weight-bold" style={{ fontSize: '1.5rem' }}>
           Sign-in to BiteJob
         </h2>
         {error && <p className="text-danger">{error}</p>}
-        {successMessage && (
-          <p className="text-success fade show" style={{ transition: 'opacity 2.5s' }}>
-            {successMessage}
-          </p>
-        )}
 
         <div className="mb-3">
           <label className="form-label">Username</label>
@@ -133,11 +115,7 @@ const LoginForm = () => {
         </div>
 
         <button type="button" className="btn btn-primary w-100" onClick={handleLogin}>
-          {loading ? (
-            <div className="spinner-border text-light" role="status"></div>
-          ) : (
-            'Sign In'
-          )}
+          Sign In
         </button>
 
         <p className="text-center mt-3" style={{ color: 'white' }}>
@@ -151,10 +129,21 @@ const LoginForm = () => {
             Register
           </span>
         </p>
+
+        <p
+          className="text-center mt-4"
+          style={{ fontSize: '0.8rem', color: 'black' }}
+        >
+          &copy; Code Crafter Web Services - HR Talent Acquisition Systems
+        </p>
       </div>
 
       {showSignUp && (
-        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <div
+          className="modal show d-block"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          tabIndex={-1}
+        >
           <div className="modal-dialog">
             <div className="modal-content text-dark">
               <div className="modal-header">
@@ -208,11 +197,7 @@ const LoginForm = () => {
                   Close
                 </button>
                 <button type="button" className="btn btn-primary" onClick={handleSignUp}>
-                  {loading ? (
-                    <div className="spinner-border text-light" role="status"></div>
-                  ) : (
-                    'Sign Up'
-                  )}
+                  Sign Up
                 </button>
               </div>
             </div>
