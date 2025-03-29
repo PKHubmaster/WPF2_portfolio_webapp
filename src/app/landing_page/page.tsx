@@ -3,12 +3,12 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
 import './home.css'; // Import the custom CSS file
-import { motion, AnimatePresence } from 'framer-motion';
 
 const LoginForm = () => {
   const [systemUserName, setSystemUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [showSignUp, setShowSignUp] = useState(false);
   const [newUser, setNewUser] = useState({
     systemUserName: '',
@@ -16,11 +16,12 @@ const LoginForm = () => {
     employerEmail: '',
     password: '',
   });
-  const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false); // State to control spinner visibility
   const router = useRouter();
 
   const handleLogin = async () => {
     setError('');
+    setLoading(true); // Show spinner
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -29,6 +30,7 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
+      setLoading(false); // Hide spinner
       if (res.ok) {
         localStorage.setItem('systemUserId', data.systemUserId);
         router.push('/home');
@@ -36,6 +38,7 @@ const LoginForm = () => {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
+      setLoading(false); // Hide spinner
       setError('Something went wrong. Try again.');
     }
   };
@@ -47,6 +50,8 @@ const LoginForm = () => {
 
   const handleSignUp = async () => {
     setError('');
+    setSuccessMessage('');
+    setLoading(true); // Show spinner
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -61,14 +66,19 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
+      setLoading(false); // Hide spinner
       if (res.ok) {
-        setModalVisible(true);
-        setTimeout(() => setModalVisible(false), 2000); // Fade out after 2 seconds
-        setShowSignUp(false);
+        setSuccessMessage('New user signed up successfully! You may log in.');
+        setTimeout(() => {
+          setSuccessMessage('');
+          setShowSignUp(false);
+          router.push('/home'); // Redirect to home after success
+        }, 2500); // Success message stays for 2.5 seconds before redirecting
       } else {
         setError(data.error || 'Sign up failed');
       }
     } catch (err) {
+      setLoading(false); // Hide spinner
       setError('Something went wrong. Try again.');
     }
   };
@@ -96,7 +106,12 @@ const LoginForm = () => {
           Sign-in to BiteJob
         </h2>
         {error && <p className="text-danger">{error}</p>}
-        
+        {successMessage && (
+          <p className="text-success fade show" style={{ transition: 'opacity 2.5s' }}>
+            {successMessage}
+          </p>
+        )}
+
         <div className="mb-3">
           <label className="form-label">Username</label>
           <input
@@ -118,7 +133,11 @@ const LoginForm = () => {
         </div>
 
         <button type="button" className="btn btn-primary w-100" onClick={handleLogin}>
-          Sign In
+          {loading ? (
+            <div className="spinner-border text-light" role="status"></div>
+          ) : (
+            'Sign In'
+          )}
         </button>
 
         <p className="text-center mt-3" style={{ color: 'white' }}>
@@ -143,39 +162,63 @@ const LoginForm = () => {
                 <button type="button" className="btn-close" onClick={() => setShowSignUp(false)} />
               </div>
               <div className="modal-body">
-                <input type="text" className="form-control mb-2" name="systemUserName" placeholder="Username" value={newUser.systemUserName} onChange={handleSignUpChange} />
-                <input type="text" className="form-control mb-2" name="employerName" placeholder="Employer Name" value={newUser.employerName} onChange={handleSignUpChange} />
-                <input type="email" className="form-control mb-2" name="employerEmail" placeholder="Employer Email" value={newUser.employerEmail} onChange={handleSignUpChange} />
-                <input type="password" className="form-control mb-2" name="password" placeholder="Password" value={newUser.password} onChange={handleSignUpChange} />
+                <div className="mb-2">
+                  <label className="form-label">Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="systemUserName"
+                    value={newUser.systemUserName}
+                    onChange={handleSignUpChange}
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Employer Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="employerName"
+                    value={newUser.employerName}
+                    onChange={handleSignUpChange}
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Employer Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="employerEmail"
+                    value={newUser.employerEmail}
+                    onChange={handleSignUpChange}
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={newUser.password}
+                    onChange={handleSignUpChange}
+                  />
+                </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowSignUp(false)}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={handleSignUp}>Sign Up</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowSignUp(false)}>
+                  Close
+                </button>
+                <button type="button" className="btn btn-primary" onClick={handleSignUp}>
+                  {loading ? (
+                    <div className="spinner-border text-light" role="status"></div>
+                  ) : (
+                    'Sign Up'
+                  )}
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
-
-      <AnimatePresence>
-        {modalVisible && (
-          <motion.div 
-            className="modal show d-block"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-          >
-            <div className="modal-dialog">
-              <div className="modal-content text-dark">
-                <div className="modal-body text-center">
-                  <p className="text-success">New user signed up successfully! You may log in.</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
