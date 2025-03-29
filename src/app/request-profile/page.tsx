@@ -82,9 +82,9 @@ const RequestProfile = () => {
     });
 
     // Fade out modal after 2.5 seconds
-    setTimeout(() => setModalFade(false), 2500);
+    setTimeout(() => setModalFade(false), 500);
     // Redirect after 3 seconds
-    setTimeout(() => router.push('/home'), 3000);
+    setTimeout(() => router.push('/home'), 1000);
   };
 
   return (

@@ -30,8 +30,8 @@ const SendInvite = () => {
       if (!response.ok) throw new Error('Failed to send invite');
 
       setShowModal(true); // Show modal
-      setTimeout(() => setModalFade(false), 2500); // Start fading at 2.5s
-      setTimeout(() => router.push('/home'), 3000); // Redirect at 3s
+      setTimeout(() => setModalFade(false), 500); // Start fading at 2.5s
+      setTimeout(() => router.push('/home'), 1000); // Redirect at 3s
     } catch (error) {
       console.error('Error:', error);
       alert('Error sending invite. Please try again.');
