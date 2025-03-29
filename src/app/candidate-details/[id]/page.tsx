@@ -107,7 +107,13 @@ const CandidateDetails = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div
+      className="container mt-5"
+      style={{
+        backgroundColor: '#e3f2fd', // Light blue background
+        minHeight: '100vh',         // Full height for the background
+      }}
+    >
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold">Candidate Details</h1>
         <button className="btn btn-primary" onClick={() => router.push('/home')}>

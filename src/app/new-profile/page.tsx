@@ -26,9 +26,8 @@ const NewProfile = () => {
     setIsLoading(true);
 
     try {
-      // Update method from PUT to POST to match typical profile creation logic
       const response = await fetch('/api/profiles', {
-        method: 'POST', // Using POST here instead of PUT
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           candidateFirstName: formData.firstName,
@@ -53,9 +52,10 @@ const NewProfile = () => {
   };
 
   return (
-    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center position-relative bg-cover"
-      style={{ backgroundImage: "url('/sign_in&sign_up_bg.jpg')" }}>
-
+    <div
+      className="vh-100 vw-100 d-flex justify-content-center align-items-center position-relative bg-cover"
+      style={{ backgroundImage: "url('/landing.jpg')" }} // Background applied
+    >
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
       <motion.div
@@ -63,9 +63,9 @@ const NewProfile = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="card p-4 shadow rounded-4 position-relative glassmorphism text-dark"
-        style={{ width: "750px", minHeight: "550px", zIndex: 10 }}>
-
-        <h2 className="text-center mb-4">Create a new Candidate Profile</h2>
+        style={{ width: '40vw', minWidth: '350px', minHeight: '550px', zIndex: 10 }} // Adjusted width
+      >
+        <h2 className="text-center mb-4">Create a New Candidate Profile</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -139,26 +139,27 @@ const NewProfile = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-            disabled={isLoading}
-          >
+          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
             {isLoading ? 'Creating...' : 'Create Profile'}
           </button>
         </form>
 
-        <button
-          className="btn btn-secondary w-100 mt-3"
-          onClick={() => router.push('/home')}
-        >
+        <button className="btn btn-secondary w-100 mt-3" onClick={() => router.push('/home')}>
           Back to Home
         </button>
       </motion.div>
 
       <style jsx>{`
-        .bg-cover { background-size: cover; background-position: center; }
-        .glassmorphism { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.3); }
+        .bg-cover {
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        .glassmorphism {
+          backdrop-filter: blur(12px);
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid rgba(0, 0, 0, 0.3);
+        }
       `}</style>
     </div>
   );

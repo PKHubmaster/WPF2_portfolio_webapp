@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
-import './home.css'; // Import the custom CSS file
+import './landing.css'; // Import the custom CSS file
 
 const LoginForm = () => {
   const [systemUserName, setSystemUserName] = useState('');
@@ -74,7 +74,7 @@ const LoginForm = () => {
     <div
       className="vh-100 d-flex justify-content-center align-items-center"
       style={{
-        backgroundImage: 'url(/landing2.jpg)', 
+        backgroundImage: 'url(/landing.jpg)', 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

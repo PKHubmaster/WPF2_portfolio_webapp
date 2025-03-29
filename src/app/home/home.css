@@ -22,3 +22,28 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   
+  #candidateTable {
+    display: block;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #candidateTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  #candidateTable tbody {
+    display: block;
+    max-height: 400px; /* Limits visible rows */
+    overflow-y: auto;
+    width: 100%;
+  }
+  
+  #candidateTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  

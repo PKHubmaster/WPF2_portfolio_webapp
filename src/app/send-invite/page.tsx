@@ -41,9 +41,9 @@ const SendInvite = () => {
   };
 
   return (
-    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center position-relative bg-cover" 
-      style={{ backgroundImage: "url('/sign_in&sign_up_bg.jpg')" }}>
-      
+    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center position-relative" 
+      style={{ backgroundImage: "url('/landing.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
       <motion.div 
@@ -51,8 +51,8 @@ const SendInvite = () => {
         animate={{ opacity: 1, scale: 1 }} 
         transition={{ duration: 0.5 }} 
         className="card p-4 shadow rounded-4 position-relative glassmorphism text-dark"
-        style={{ width: "750px", height: "450px", zIndex: 10 }}>
-        
+        style={{ width: "55%", height: "auto", zIndex: 10, marginBottom: "20px" }}>
+
         <h2 className="text-center mb-4">Send an invite to a potential employer</h2>
         
         <form onSubmit={handleSubmit}>
@@ -64,7 +64,6 @@ const SendInvite = () => {
             <label className="form-label">Employer Email:</label>
             <input type="email" className="form-control" name="employerEmail" value={formData.employerEmail} onChange={handleChange} required />
           </div>
-          <p><b>Candidate:</b> John Doe</p>
           <p><i>Check your email for a temporary password.</i></p>
           <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
             {isLoading ? 'Sending...' : 'Send Invite'}

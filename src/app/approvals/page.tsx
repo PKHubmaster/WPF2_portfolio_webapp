@@ -62,7 +62,7 @@ const Approvals = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{ backgroundColor: '#f0f8ff' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Pending Profile Approvals</h1>
         <button className="btn btn-primary" onClick={() => router.push('/home')}>
