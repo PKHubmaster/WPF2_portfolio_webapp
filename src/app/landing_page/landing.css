@@ -83,3 +83,21 @@
   width: 3rem;
   height: 3rem;
 }
+
+/* Style for the tiny bold black text at the top of the screen */
+.small-text {
+  font-size: 0.7rem;
+  color: black; /* Bold black text */
+  font-weight: bold; /* Bold text */
+  font-style: italic; /* Italic text */
+  position: absolute;
+  top: -100px; /* Place the text 10px from the top */
+  left: 50%;
+  transform: translateX(-50%); /* Horizontally center the text */
+  text-align: center;
+  width: 100%; /* Ensure it spans the entire width */
+}
+
+
+
+

@@ -89,6 +89,12 @@ const LoginForm = () => {
           transform: 'translateY(-50%)', // Centers the content vertically
         }}
       >
+        {/* Text at the very top of the screen */}
+        <div className="small-text">
+          Don't just float on the job ocean alone,<br />
+          let BiteJob show you hidden opportunities
+        </div>
+
         <h2 className="mb-4 font-weight-bold" style={{ fontSize: '1.5rem' }}>
           Sign-in to BiteJob
         </h2>
@@ -121,9 +127,8 @@ const LoginForm = () => {
         <p className="text-center mt-3" style={{ color: 'white' }}>
           Not an existing user?{' '}
           <span
-            className="text-primary"
             role="button"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', color: 'magenta' }}
             onClick={() => setShowSignUp(true)}
           >
             Register
@@ -132,15 +137,15 @@ const LoginForm = () => {
 
         <p
           className="text-center mt-4"
-          style={{ fontSize: '0.6rem', color: 'black' }}
+          style={{ fontSize: '0.7rem', color: 'black' }}
         >
-          &copy; Code Crafter Web Services - HR Talent Acquisition Systems
+          &copy; 2025 Code Crafters Web Services - HR Talent Systems
         </p>
         <p
           className="text-center mt-1"
           style={{ fontSize: '0.7rem', color: 'cyan', fontStyle: 'bold' }}
         >
-          let BiteJob take a bite out of the job market for you
+          Take a Bite out of the Job market
         </p>
       </div>
 
