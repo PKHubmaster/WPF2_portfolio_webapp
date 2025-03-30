@@ -4,13 +4,10 @@ import connectToDatabase from '../../../../../lib/mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI || '');
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: { id: string } }) {
   try {
-    const profileId = params.id; // Use params directly
-
-    if (!profileId) {
-      return NextResponse.json({ error: 'Profile ID is required' }, { status: 400 });
-    }
+    // Fix: Await context.params before accessing its properties
+    const { id: profileId } = await context.params; // Fixed: Ensure `params` are awaited before usage
 
     await connectToDatabase();
 

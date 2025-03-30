@@ -11,6 +11,14 @@ const CandidateDetails = () => {
   const [userType, setUserType] = useState<number | null>(null); // New state to store userType
   const router = useRouter();
 
+  // Redirect to landing page if no valid JWT
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      router.push('/landing_page');
+    }
+  }, [router]);
+
   useEffect(() => {
     const userId = localStorage.getItem('systemUserId');
     if (userId) {

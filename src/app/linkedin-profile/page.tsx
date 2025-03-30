@@ -1,10 +1,21 @@
-"use client";
+'use client';
 
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { motion } from "framer-motion";
+import React, { useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 const LinkedInProfilePage = () => {
+  const router = useRouter();
+
+  // Redirect to landing page if no valid JWT
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      router.push('/landing_page');
+    }
+  }, [router]);
+
   return (
     <div
       style={{

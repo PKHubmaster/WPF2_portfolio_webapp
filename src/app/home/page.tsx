@@ -14,7 +14,14 @@ const Home = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const router = useRouter();
 
+  // JWT authentication check
   useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      router.push('/landing_page');
+      return;
+    }
+
     const userId = localStorage.getItem('systemUserId');
     if (userId) {
       setSystemUserId(userId);
@@ -55,11 +62,8 @@ const Home = () => {
 
         if (response.ok) {
           setProfiles(data);
-
-          // If userType is 1, store profiles in list_A
           if (userType === 1) {
-            const list_A = data;
-            console.log('Fetched Profiles for userType 1:', list_A); // Log list_A for userType 1
+            console.log('Fetched Profiles for userType 1:', data);
           }
         } else {
           setProfiles([]);
@@ -72,19 +76,16 @@ const Home = () => {
     };
 
     fetchProfiles();
-  }, [systemUserId, userType]); // Adding userType as dependency
+  }, [systemUserId, userType]);
 
   const handleLogout = () => {
+    localStorage.removeItem('jwt');
     localStorage.removeItem('systemUserId');
     router.push('/landing_page');
   };
 
   const handleButtonClick = () => {
-    if (userType === 0) {
-      router.push('/send-invite');
-    } else {
-      router.push('/request-profile');
-    }
+    router.push(userType === 0 ? '/send-invite' : '/request-profile');
   };
 
   const handleReviewPendingApprovals = () => {
@@ -102,16 +103,13 @@ const Home = () => {
   };
 
   const sortedProfiles = [...profiles].sort((a, b) => {
-    const fieldA = a[sortField].toLowerCase();
-    const fieldB = b[sortField].toLowerCase();
-
-    if (fieldA < fieldB) return sortOrder === 'asc' ? -1 : 1;
-    if (fieldA > fieldB) return sortOrder === 'asc' ? 1 : -1;
-    return 0;
+    const fieldA = a[sortField]?.toLowerCase() || '';
+    const fieldB = b[sortField]?.toLowerCase() || '';
+    return fieldA < fieldB ? (sortOrder === 'asc' ? -1 : 1) : fieldA > fieldB ? (sortOrder === 'asc' ? 1 : -1) : 0;
   });
 
   return (
-    <div className="container mt-5" style={{ backgroundColor: '#e0f7fa' }}> {/* Light blue background */}
+    <div className="container mt-5" style={{ backgroundColor: '#e0f7fa' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Welcome to the dashboard, {systemUserName}</h1>
         <button className="btn btn-danger" onClick={handleLogout}>
@@ -154,12 +152,10 @@ const Home = () => {
             <thead className="table-dark">
               <tr>
                 <th onClick={() => handleSort('employeeFirstName')}>
-                  First Name
-                  {sortField === 'employeeFirstName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
+                  First Name {sortField === 'employeeFirstName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
                 </th>
                 <th onClick={() => handleSort('employeeLastName')}>
-                  Last Name
-                  {sortField === 'employeeLastName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
+                  Last Name {sortField === 'employeeLastName' && (sortOrder === 'asc' ? ' ↑' : ' ↓')}
                 </th>
                 <th>Actions</th>
               </tr>
@@ -172,29 +168,20 @@ const Home = () => {
                     <td>{profile.employeeLastName}</td>
                     <td>
                       {userType === 0 && (
-                        <button
-                          className="btn btn-info btn-sm"
-                          onClick={() => router.push(`/candidate-details/${profile._id}`)}
-                        >
+                        <button className="btn btn-info btn-sm" onClick={() => router.push(`/candidate-details/${profile._id}`)}>
                           View Candidate Details
                         </button>
                       )}
-
                       {userType === 1 && profile.accessStatus === 'Pending' && (
                         <button className="btn btn-secondary btn-sm" disabled>
                           Pending Admin Approval
                         </button>
                       )}
-
                       {userType === 1 && profile.accessStatus !== 'Pending' && profile.accessStatus !== 'Rejected' && (
-                        <button
-                          className="btn btn-info btn-sm"
-                          onClick={() => router.push(`/candidate-details/${profile._id}`)}
-                        >
+                        <button className="btn btn-info btn-sm" onClick={() => router.push(`/candidate-details/${profile._id}`)}>
                           View Candidate Details
                         </button>
                       )}
-
                       {profile.accessStatus === 'Rejected' && (
                         <button className="btn btn-danger btn-sm" disabled>
                           Rejected

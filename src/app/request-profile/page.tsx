@@ -32,6 +32,14 @@ const RequestProfile = () => {
   const [modalFade, setModalFade] = useState(true);
   const router = useRouter();
 
+  // Redirect to landing page if no valid JWT
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      router.push('/landing_page');
+    }
+  }, [router]);
+  
   // Fetch candidates and employers on component mount
   useEffect(() => {
     const fetchData = async () => {

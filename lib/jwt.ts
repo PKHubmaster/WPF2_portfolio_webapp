@@ -3,11 +3,12 @@ import jwt from 'jsonwebtoken';
 interface Payload {
   userId: string;
   username: string;
+  userType: number;  // Add userType
 }
 
 export function generateToken(payload: Payload) {
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
-    expiresIn: '1h', // Token expiration time
+    expiresIn: '1h',
   });
   return token;
 }

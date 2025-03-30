@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
@@ -15,8 +16,10 @@ const LoginForm = () => {
     employerEmail: '',
     password: '',
   });
+
   const router = useRouter();
 
+  // Handle login
   const handleLogin = async () => {
     setError('');
     try {
@@ -28,7 +31,15 @@ const LoginForm = () => {
 
       const data = await res.json();
       if (res.ok) {
+        // Store JWT, user ID, and userType in localStorage
+        localStorage.setItem('jwt', data.token);
         localStorage.setItem('systemUserId', data.systemUserId);
+        localStorage.setItem('userType', data.userType);  // Store userType
+
+        console.log('Stored JWT:', localStorage.getItem('jwt'));
+        console.log('Stored User ID:', localStorage.getItem('systemUserId'));
+        console.log('Stored User Type:', localStorage.getItem('userType'));
+
         router.push('/home');
       } else {
         setError(data.error || 'Login failed');
@@ -38,11 +49,13 @@ const LoginForm = () => {
     }
   };
 
+  // Handle sign-up field changes
   const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle user sign-up
   const handleSignUp = async () => {
     setError('');
     try {
@@ -54,7 +67,7 @@ const LoginForm = () => {
           employerName: newUser.employerName,
           employerEmail: newUser.employerEmail,
           password: newUser.password,
-          usertype: 1,
+          usertype: 1,  // Default new users to userType = 1
         }),
       });
 
@@ -74,7 +87,7 @@ const LoginForm = () => {
     <div
       className="vh-100 d-flex justify-content-center align-items-center"
       style={{
-        backgroundImage: 'url(/landing.jpg)', 
+        backgroundImage: 'url(/landing.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -83,13 +96,13 @@ const LoginForm = () => {
       <div
         className="text-center text-light"
         style={{
-          maxWidth: '320px', // 20% shorter than 400px
+          maxWidth: '320px', // Adjusted width
           position: 'absolute',
-          top: '50%', // 50% up
-          transform: 'translateY(-50%)', // Centers the content vertically
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       >
-        {/* Text at the very top of the screen */}
+        {/* Header text */}
         <div className="small-text">
           Don't just float on the job ocean alone,<br />
           let BiteJob show you hidden opportunities
@@ -100,6 +113,7 @@ const LoginForm = () => {
         </h2>
         {error && <p className="text-danger">{error}</p>}
 
+        {/* Login Form */}
         <div className="mb-3">
           <label className="form-label">Username</label>
           <input
@@ -135,26 +149,18 @@ const LoginForm = () => {
           </span>
         </p>
 
-        <p
-          className="text-center mt-4"
-          style={{ fontSize: '0.7rem', color: 'black' }}
-        >
+        {/* Footer */}
+        <p className="text-center mt-4" style={{ fontSize: '0.7rem', color: 'black' }}>
           &copy; 2025 Code Crafters Web Services - HR Talent Systems
         </p>
-        <p
-          className="text-center mt-1"
-          style={{ fontSize: '0.7rem', color: 'cyan', fontStyle: 'bold' }}
-        >
+        <p className="text-center mt-1" style={{ fontSize: '0.7rem', color: 'cyan', fontStyle: 'bold' }}>
           Take a Bite out of the Job market
         </p>
       </div>
 
+      {/* Sign-Up Modal */}
       {showSignUp && (
-        <div
-          className="modal show d-block"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-          tabIndex={-1}
-        >
+        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} tabIndex={-1}>
           <div className="modal-dialog">
             <div className="modal-content text-dark">
               <div className="modal-header">

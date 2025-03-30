@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,18 @@ const SendInvite = () => {
   const [modalFade, setModalFade] = useState(true); // Controls fade effect
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  // Redirect to landing page if no valid JWT
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    const userType = localStorage.getItem('userType'); // Assuming userType is stored in localStorage
+
+   if (!token) {
+     router.push('/landing_page');
+   } else if (userType === '1') {
+     router.push('/unauthorized'); // Redirect userType 1 to an unauthorized page
+   }
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

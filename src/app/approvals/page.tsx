@@ -8,6 +8,18 @@ const Approvals = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Redirect to landing page if no valid JWT
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    const userType = localStorage.getItem('userType'); // Assuming userType is stored in localStorage
+
+   if (!token) {
+     router.push('/landing_page');
+   } else if (userType === '1') {
+     router.push('/unauthorized'); // Redirect userType 1 to an unauthorized page
+   }
+  }, [router]);
+
   useEffect(() => {
     const fetchPendingProfiles = async () => {
       try {
