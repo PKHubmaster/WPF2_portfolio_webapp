@@ -1,18 +1,21 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from '../../../../../lib/mongodb';
-import SysUserModel, { ISystemUser } from '../../../../../models/SystemUserModel'; // Import the model and interface
-import { generateToken } from '../../../../../lib/jwt'; // Import the generateToken function
+import SysUserModel, { ISystemUser } from '../../../../../models/SystemUserModel';
+import { generateToken } from '../../../../../lib/jwt';
 
 export async function POST(request: Request) {
   try {
     const { systemUserName, password } = await request.json();
 
+    // Ensure username is always lowercase for consistent lookup
+    const normalizedUsername = systemUserName.toLowerCase();
+
     // Connect to the database
     await connectToDatabase();
 
-    // Find the user in the systemusers collection and explicitly type the result as ISystemUser
-    const user = await SysUserModel.findOne({ systemUserName }) as ISystemUser | null;
+    // Find the user in the systemusers collection
+    const user = await SysUserModel.findOne({ systemUserName: normalizedUsername }) as ISystemUser | null;
 
     if (!user) {
       return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 });
@@ -22,19 +25,16 @@ export async function POST(request: Request) {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
-      // Handle _id as ObjectId explicitly
-      const userId = user._id.toString(); // user._id is now of type ObjectId, so toString() should work.
-      const username = user.systemUserName; // systemUserName should be a string.
-
-      // Generate JWT token with user data (userId and username)
-      const token = generateToken({ userId, username });
+      // Generate JWT token with user data
+      const token = generateToken({ userId: user._id.toString(), username: user.systemUserName });
 
       // Return the JWT token along with the systemUserId
-      return NextResponse.json({ token, systemUserId: userId });
+      return NextResponse.json({ token, systemUserId: user._id.toString() });
     } else {
       return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 });
     }
   } catch (error) {
+    console.error('Login error:', error);
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

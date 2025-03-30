@@ -31,13 +31,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
   }
 
+  // Convert username to lowercase to maintain consistency
+  const normalizedUsername = systemUserName.toLowerCase();
+
   // Connect to the database
   await connectToDatabase();
 
   try {
-    // Check if the username or email already exists
+    // Check if the username or email already exists (using lowercase username)
     const existingUser = await SysUserModel.findOne({
-      $or: [{ systemUserName }, { employerEmail }],
+      $or: [{ systemUserName: normalizedUsername }, { employerEmail }],
     });
 
     if (existingUser) {
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     // Create a new user document
     const newUser = new SysUserModel({
-      systemUserName,
+      systemUserName: normalizedUsername,  // Save username in lowercase
       employerName,
       employerEmail,
       usertype,

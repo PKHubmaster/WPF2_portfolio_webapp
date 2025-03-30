@@ -1,9 +1,9 @@
-import mongoose, { Document, Schema, ObjectId } from 'mongoose';  // Import ObjectId from mongoose
+import mongoose, { Document, Schema, ObjectId } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 // Define a TypeScript interface for the document
 export interface ISystemUser extends Document {
-  _id: ObjectId;  // Ensure _id is of type ObjectId
+  _id: ObjectId;
   systemUserName: string;
   employerName: string;
   employerEmail: string;
@@ -18,26 +18,31 @@ const systemUserSchema = new Schema<ISystemUser>({
   employerName: { type: String, required: true },
   employerEmail: { type: String, required: true, unique: true },
   usertype: { type: Number, required: true },
-  password: { type: String, required: true },  // Password field
+  password: { type: String, required: true },
 });
 
-// Hash the password before saving the user
-systemUserSchema.pre('save', async function(next) {
+// Pre-save middleware for converting username to lowercase and hashing password
+systemUserSchema.pre('save', async function (next) {
+  // Convert username to lowercase before saving
+  if (this.isModified('systemUserName') || this.isNew) {
+    this.systemUserName = this.systemUserName.toLowerCase();
+  }
+
+  // Hash password before saving
   if (this.isModified('password') || this.isNew) {
     try {
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
-      next();
     } catch (err: any) {
-      next(err);  // Pass the error to the next middleware
+      return next(err);
     }
-  } else {
-    return next();
   }
+
+  next();
 });
 
 // Method to compare passwords
-systemUserSchema.methods.comparePassword = async function(candidatePassword: string) {
+systemUserSchema.methods.comparePassword = async function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
