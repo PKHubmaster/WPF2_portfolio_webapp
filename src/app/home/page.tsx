@@ -4,14 +4,13 @@ import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../app/home/home.css';
 
-
 const Home = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [systemUserId, setSystemUserId] = useState<string | null>(null);
   const [userType, setUserType] = useState<number | null>(null);
-  const [systemUserName, setSystemUserName] = useState<string | null>(null); 
-  const [sortField, setSortField] = useState<string>('employeeFirstName'); 
+  const [systemUserName, setSystemUserName] = useState<string | null>(null);
+  const [sortField, setSortField] = useState<string>('employeeFirstName');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const router = useRouter();
 
@@ -56,6 +55,12 @@ const Home = () => {
 
         if (response.ok) {
           setProfiles(data);
+
+          // If userType is 1, store profiles in list_A
+          if (userType === 1) {
+            const list_A = data;
+            console.log('Fetched Profiles for userType 1:', list_A); // Log list_A for userType 1
+          }
         } else {
           setProfiles([]);
         }
@@ -67,7 +72,7 @@ const Home = () => {
     };
 
     fetchProfiles();
-  }, [systemUserId]);
+  }, [systemUserId, userType]); // Adding userType as dependency
 
   const handleLogout = () => {
     localStorage.removeItem('systemUserId');
@@ -99,7 +104,7 @@ const Home = () => {
   const sortedProfiles = [...profiles].sort((a, b) => {
     const fieldA = a[sortField].toLowerCase();
     const fieldB = b[sortField].toLowerCase();
-    
+
     if (fieldA < fieldB) return sortOrder === 'asc' ? -1 : 1;
     if (fieldA > fieldB) return sortOrder === 'asc' ? 1 : -1;
     return 0;

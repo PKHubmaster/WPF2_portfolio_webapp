@@ -16,19 +16,20 @@ interface Candidate {
   _id: string;
   employeeFirstName: string;
   employeeLastName: string;
+  accessStatus?: string; // Add accessStatus to identify existing requests
 }
 
 const RequestProfile = () => {
   const [formData, setFormData] = useState({
-    employerId: "",   // Initially will be auto-filled
-    employerEmail: "", // Initially will be auto-filled
+    employerId: "",
+    employerEmail: "",
     selectedCandidate: "",
   });
 
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [employers, setEmployers] = useState<Employer[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalFade, setModalFade] = useState(true); // Controls fade effect
+  const [modalFade, setModalFade] = useState(true);
   const router = useRouter();
 
   // Fetch candidates and employers on component mount
@@ -37,37 +38,92 @@ const RequestProfile = () => {
       const response = await fetch('/api/requestprofileaccess');
       const data = await response.json();
 
-      setCandidates(data.candidates);
       setEmployers(data.employers);
+
+      // Store candidates and employers in localStorage as list_B
+      localStorage.setItem('list_B', JSON.stringify(data));
+
+      // Log the data to console
+      console.log('list_B:', data);
     };
 
     fetchData();
   }, []);
 
-  // Fetch systemUserId (Employer ID) from local storage or context (e.g., from home page)
+  // Fetch systemUserId (Employer ID) and systemUserType from local storage
   useEffect(() => {
-    const systemUserId = localStorage.getItem('systemUserId'); // Get the systemUserId (Employer ID)
-    
+    const systemUserId = localStorage.getItem('systemUserId');
+    const systemUserType = localStorage.getItem('systemUserType');
+
     if (systemUserId) {
       const selectedEmployer = employers.find(emp => emp._id === systemUserId);
-
       if (selectedEmployer) {
         setFormData({
           employerId: systemUserId,
           employerEmail: selectedEmployer.employerEmail,
           selectedCandidate: "",
         });
+
+        // Log the employer details and system user data
+        console.log('Employer Name:', selectedEmployer.employerName);
+        console.log('Employer Email:', selectedEmployer.employerEmail);
+        console.log('System User ID:', systemUserId);
+        console.log('System User Type:', systemUserType);
+
+        // Fetch profiles based on systemUserId and store them in LocalStorage
+        const fetchProfiles = async () => {
+          const response = await fetch(`/api/profiles/${systemUserId}`);
+          const data = await response.json();
+          
+          // Store profiles in LocalStorage as list_A
+          localStorage.setItem('list_A', JSON.stringify(data));
+
+          // Print the profiles (list_A) to the console
+          console.log('list_A:', data);
+        };
+
+        fetchProfiles();
       }
     }
-  }, [employers]); // Trigger when employers are loaded
+  }, [employers]); // This will run only once when employers data is fetched
 
-  // Handle form data change
+  // Compute list_C once list_B and list_A are loaded
+  useEffect(() => {
+    const list_B = JSON.parse(localStorage.getItem('list_B') || 'null');
+    const list_A = JSON.parse(localStorage.getItem('list_A') || 'null');
+
+    // Ensure we have both list_B and list_A loaded
+    if (list_B && list_A) {
+      // Extract only the candidates portion of list_B
+      const candidates_B = list_B.candidates;
+
+      // Filter out candidates from list_A based on _id
+      const list_C = candidates_B.filter(candidateB => 
+        !list_A.some(candidateA => candidateA._id === candidateB._id)
+      );
+
+      // Sort list_C alphabetically by employeeFirstName and employeeLastName
+      const sortedList_C = list_C.sort((a, b) => {
+        const nameA = `${a.employeeFirstName} ${a.employeeLastName}`.toLowerCase();
+        const nameB = `${b.employeeFirstName} ${b.employeeLastName}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+
+      // Store sorted list_C in localStorage
+      localStorage.setItem('list_C', JSON.stringify(sortedList_C));
+
+      // Set the candidates state to sorted list_C for dropdown population
+      setCandidates(sortedList_C);
+
+      // Log sorted list_C to the console (only once)
+      console.log('sorted list_C:', sortedList_C);
+    }
+  }, []); // This will run once after both list_A and list_B are loaded
+
+  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
-    if (name === "selectedCandidate") {
-      setFormData({ ...formData, selectedCandidate: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
   // Handle form submission
@@ -76,28 +132,25 @@ const RequestProfile = () => {
     setModalOpen(true);
 
     const requestData = {
-      systemUser: formData.employerId, 
-      profile: formData.selectedCandidate, 
+      systemUser: formData.employerId,
+      profile: formData.selectedCandidate,
       requestDate: new Date().toISOString(),
       accessStatus: "Pending",
     };
 
     await fetch('/api/requestprofileaccess', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData),
     });
 
-    // Fade out modal after 2.5 seconds
+    // Fade out modal after a delay
     setTimeout(() => setModalFade(false), 500);
-    // Redirect after 3 seconds
     setTimeout(() => router.push('/home'), 1000);
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 position-relative bg-cover" 
+    <div className="d-flex justify-content-center align-items-center vh-100 position-relative bg-cover"
       style={{ backgroundImage: "url('/landing.jpg')" }}>
 
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
@@ -117,11 +170,15 @@ const RequestProfile = () => {
             <label className="form-label">Select Candidate:</label>
             <select className="form-select" name="selectedCandidate" value={formData.selectedCandidate} onChange={handleChange}>
               <option value="" disabled>Select a candidate</option>
-              {candidates.map((candidate) => (
-                <option key={candidate._id} value={candidate._id}>
-                  {candidate.employeeFirstName} {candidate.employeeLastName}
-                </option>
-              ))}
+              {candidates.length > 0 ? (
+                candidates.map((candidate) => (
+                  <option key={candidate._id} value={candidate._id}>
+                    {candidate.employeeFirstName} {candidate.employeeLastName}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No candidates available</option>
+              )}
             </select>
           </div>
 
@@ -173,9 +230,7 @@ const RequestProfile = () => {
         }
         .glassmorphism {
           backdrop-filter: blur(12px);
-          background: rgba(255, 255, 255, 0.8);
-          border: 1px solid rgba(0, 0, 0, 0.3);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.2);
         }
       `}</style>
     </div>
