@@ -88,11 +88,10 @@ const RequestProfile = () => {
   }, [employers]); // This will run only once when employers data is fetched
 
   // Compute list_C once list_B and list_A are loaded
-  useEffect(() => {
+  const computeListC = () => {
     const list_B = JSON.parse(localStorage.getItem('list_B') || 'null');
     const list_A = JSON.parse(localStorage.getItem('list_A') || 'null');
 
-    // Ensure we have both list_B and list_A loaded
     if (list_B && list_A) {
       // Extract only the candidates portion of list_B
       const candidates_B = list_B.candidates;
@@ -102,7 +101,7 @@ const RequestProfile = () => {
         !list_A.some(candidateA => candidateA._id === candidateB._id)
       );
 
-      // Sort list_C alphabetically by employeeFirstName and employeeLastName
+      // Sort list_C alphabetically
       const sortedList_C = list_C.sort((a, b) => {
         const nameA = `${a.employeeFirstName} ${a.employeeLastName}`.toLowerCase();
         const nameB = `${b.employeeFirstName} ${b.employeeLastName}`.toLowerCase();
@@ -118,7 +117,7 @@ const RequestProfile = () => {
       // Log sorted list_C to the console (only once)
       console.log('sorted list_C:', sortedList_C);
     }
-  }, []); // This will run once after both list_A and list_B are loaded
+  };
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -149,6 +148,12 @@ const RequestProfile = () => {
     setTimeout(() => router.push('/home'), 1000);
   };
 
+  // Refresh list_C when dropdown is clicked
+  const handleDropdownClick = () => {
+    console.log("Dropdown clicked, refreshing list_C...");
+    computeListC(); // Trigger a refresh of list_C
+  };
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 position-relative bg-cover"
       style={{ backgroundImage: "url('/landing.jpg')" }}>
@@ -168,7 +173,13 @@ const RequestProfile = () => {
           {/* Candidate Selection */}
           <div className="mb-3">
             <label className="form-label">Select Candidate:</label>
-            <select className="form-select" name="selectedCandidate" value={formData.selectedCandidate} onChange={handleChange}>
+            <select 
+              className="form-select" 
+              name="selectedCandidate" 
+              value={formData.selectedCandidate} 
+              onChange={handleChange}
+              onClick={handleDropdownClick} // Trigger refresh when dropdown is clicked
+            >
               <option value="" disabled>Select a candidate</option>
               {candidates.length > 0 ? (
                 candidates.map((candidate) => (
@@ -216,23 +227,12 @@ const RequestProfile = () => {
                 <p><i>Request has been sent to portfolio_manager@hotmail.com</i></p>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setModalOpen(false)}>Close</button>
+                <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>Close</button>
               </div>
             </div>
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        .bg-cover {
-          background-size: cover;
-          background-position: center;
-        }
-        .glassmorphism {
-          backdrop-filter: blur(12px);
-          background: rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </div>
   );
 };
