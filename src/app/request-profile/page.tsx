@@ -98,7 +98,7 @@ const RequestProfile = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 position-relative bg-cover" 
-      style={{ backgroundImage: "url('/sign_in&sign_up_bg.jpg')" }}>
+      style={{ backgroundImage: "url('/landing.jpg')" }}>
 
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
